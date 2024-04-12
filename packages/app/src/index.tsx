@@ -1,6 +1,6 @@
-import { Button } from "@drawease/components";
-import React, { FC } from "react";
+import { Button } from '@drawease/components';
+import React, { FC } from 'react';
 
-const DrawEaseApp: FC = () => <Button>xxx</Button>;
+const DrawEaseApp: FC = () => <Button />;
 
 export default DrawEaseApp;

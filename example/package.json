@@ -1,5 +1,5 @@
 {
-  "name": "@drawease/vite-example",
+  "name": "@drawease/example",
   "description": "Example of using Vite in a TS monorepo",
   "private": true,
   "version": "1.0.0",

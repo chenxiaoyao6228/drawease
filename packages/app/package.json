@@ -1,6 +1,6 @@
 {
   "name": "@drawease/app",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "scripts": {
     "build": "pnpm run clean && pnpm run compile",
     "clean": "rimraf ./dist",

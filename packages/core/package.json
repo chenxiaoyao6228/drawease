@@ -1,6 +1,6 @@
 {
   "name": "@drawease/core",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "dist/index",
   "types": "dist/index",
   "files": [
@@ -13,7 +13,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@drawease/utils": "~1.0.0"
+    "@drawease/utils": "workspace:*"
   },
   "devDependencies": {
     "rimraf": "~5.0.0",

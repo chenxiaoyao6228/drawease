@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-// import { Button } from "@drawease/components";
-import { DrawEaseApp } from "@drawease/app";
-import "./App.css";
+import './App.css';
+
+import DrawEaseApp from '@drawease/app';
+import React, { useState } from 'react';
 
 const App = () => {
   return (

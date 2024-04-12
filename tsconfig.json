@@ -1,15 +1,6 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@drawease/components/*": [
-        "packages/components/src/*"
-      ],
-      "@drawease/*": [
-        "packages/*/src"
-      ]
-    },
     "noEmit": true
   }
 }

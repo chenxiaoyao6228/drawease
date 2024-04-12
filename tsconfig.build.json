@@ -11,7 +11,25 @@
     "esModuleInterop": true,
     "types": [],
     "jsx": "react",
-    "noEmit": false
+    "noEmit": false,
+    "baseUrl": ".",
+    "paths": {
+      "@drawease/app/*": [
+        "packages/app/src/*"
+      ],
+      "@drawease/components/*": [
+        "packages/components/src/*"
+      ],
+      "@drawease/core/*": [
+        "packages/core/src/*"
+      ],
+      "@drawease/utils/*": [
+        "packages/utils/src/*"
+      ],
+      "@drawease/*": [
+        "packages/*/src"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
