@@ -1,5 +1,5 @@
 {
-  "name": "@drawease/core",
+  "name": "@drawease/board",
   "version": "0.0.1",
   "main": "dist/index",
   "types": "dist/index",

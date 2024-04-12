@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@drawease/utils": "workspace:*",
-    "@drawease/core": "workspace:*",
+    "@drawease/board": "workspace:*",
     "@drawease/components": "workspace:*"
   },
   "devDependencies": {

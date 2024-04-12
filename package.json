@@ -13,7 +13,7 @@
     "docs": "doctoc --title '**Table of content**' README.md",
     "clean": "pnpm run -r clean",
     "build:utils": "pnpm --filter @drawease/utils build",
-    "build:core": "pnpm --filter @drawease/core build",
+    "build:core": "pnpm --filter @drawease/board build",
     "build:components": "pnpm --filter @drawease/components build",
     "build:app": "pnpm --filter @drawease/app build",
     "build": "pnpm run -r build",

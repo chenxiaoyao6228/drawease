@@ -13,7 +13,7 @@
   "dependencies": {
     "@drawease/app": "workspace:*",
     "@drawease/components": "workspace:*",
-    "@drawease/core": "workspace:*",
+    "@drawease/board": "workspace:*",
     "@drawease/utils": "workspace:*",
     "react": "~18.2.0",
     "react-dom": "~18.2.0"

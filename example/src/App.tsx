@@ -1,12 +1,14 @@
 import './App.css';
 
 import DrawEaseApp from '@drawease/app';
-import React, { useState } from 'react';
+
+import initialData from './mockData';
 
 const App = () => {
   return (
     <div className="App">
-      <DrawEaseApp />
+      {/* 其他组件 */}
+      <DrawEaseApp initialData={initialData} />
     </div>
   );
 };

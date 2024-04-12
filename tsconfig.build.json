@@ -20,8 +20,8 @@
       "@drawease/components/*": [
         "packages/components/src/*"
       ],
-      "@drawease/core/*": [
-        "packages/core/src/*"
+      "@drawease/board/*": [
+        "packages/board/src/*"
       ],
       "@drawease/utils/*": [
         "packages/utils/src/*"
