@@ -1,17 +1,18 @@
 import { RectElementData } from '../types';
-import BaseElement from './Base';
+import BaseElement, { RenderConfig } from './Base';
 
-export default class RectElement extends BaseElement {
+export default class RoughRectElement extends BaseElement {
   constructor(data: RectElementData) {
     super(data);
   }
-  render(ctx: CanvasRenderingContext2D) {
-    const { width, height, x, y, fillStyle, strokeColor, strokeStyle } = this._data as RectElementData;
-    ctx.fillStyle = fillStyle || 'black';
-    ctx.fillRect(x, y, width, height);
-    if (strokeColor && strokeStyle) {
-      ctx.strokeStyle = strokeStyle;
-      ctx.strokeRect(x, y, width, height);
-    }
+
+  render(renderConfig: RenderConfig) {
+    const { rc, ctx } = renderConfig;
+
+    const { x, y, width, height, fillStyle, strokeColor, strokeWidth, strokeStyle, roughness = 1 } = this._data as RectElementData;
+
+    ctx.fillStyle = fillStyle;
+    rc.rectangle(x, y, width, height, { stroke: strokeColor, strokeWidth, roughness });
+    ctx.fill();
   }
 }

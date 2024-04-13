@@ -1,9 +1,18 @@
+// https://github.com/rough-stuff/rough/wiki
+import { RoughCanvas } from 'roughjs/bin/canvas';
+
 import { BaseElementData } from '../types';
+
+export interface RenderConfig {
+  rc: RoughCanvas;
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+}
 
 export interface IBaseElement {
   getData: () => BaseElementData;
   setData: (data: BaseElementData) => void;
-  render: (ctx: CanvasRenderingContext2D) => void;
+  render: (renderConfig: RenderConfig) => void;
 }
 
 export default abstract class BaseElement implements IBaseElement {
@@ -20,7 +29,7 @@ export default abstract class BaseElement implements IBaseElement {
       ...data
     };
   }
-  render() {
+  render(renderConfig: RenderConfig) {
     throw new Error('Each element should implement a render function!');
   }
 }

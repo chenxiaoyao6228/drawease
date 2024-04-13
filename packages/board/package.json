@@ -13,7 +13,8 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@drawease/utils": "workspace:*"
+    "@drawease/utils": "workspace:*",
+    "roughjs": "^4.6.6"
   },
   "devDependencies": {
     "rimraf": "~5.0.0",

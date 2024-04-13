@@ -1,10 +1,10 @@
 // import { Button } from '@drawease/components';
-import { Board } from '@drawease/board';
+import { BaseElementData, Board } from '@drawease/board';
 import React, { useEffect, useRef } from 'react';
 
 // 給外部暴露的接口
 interface DrawEaseAppProps {
-  initialData?: any[];
+  initialData?: BaseElementData[];
   onBoardInited?: (board: Board) => void;
 }
 
@@ -18,18 +18,18 @@ const DrawEaseApp = (props: DrawEaseAppProps) => {
       return;
     }
 
-    const _Board = new Board({
+    const board = new Board({
       container: containerRef.current
     });
 
     if (initialData) {
-      _Board.loadDatas(initialData);
+      board.loadDatas(initialData);
     }
 
-    BoardRef.current = _Board;
+    BoardRef.current = board;
 
-    onBoardInited && onBoardInited(_Board);
-  }, [containerRef, onBoardInited]);
+    onBoardInited && onBoardInited(board);
+  }, [containerRef, onBoardInited, initialData]);
 
   return <div id="drawease-container" ref={containerRef}></div>;
 };
