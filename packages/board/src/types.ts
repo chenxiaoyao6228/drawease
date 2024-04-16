@@ -16,6 +16,7 @@ export interface BaseElementData {
   fillStyle: FillStyle;
   strokeWidth: number;
   strokeStyle: StrokeStyle;
+  roughness: number;
   // roundness: null | { type: RoundnessType; value?: number }; // 暂不支持
   opacity: number;
   // 版本控制
@@ -30,4 +31,28 @@ export interface RectElementData extends BaseElementData {
 
 export interface EllipseElementData extends BaseElementData {
   type: 'ellipse';
+}
+
+export interface LineElementData extends BaseElementData {
+  type: 'line';
+  points: [number, number][];
+  lastCommittedPoint: null | [number, number];
+  startBinding: null | string;
+  endBinding: null | string;
+  startArrowhead: null | string;
+  endArrowhead: null | string;
+}
+
+export interface DiamondElementData extends BaseElementData {
+  type: 'diamond';
+}
+
+export interface ArrowElementData extends BaseElementData {
+  type: 'arrow';
+  points: [number, number][];
+  lastCommittedPoint: null | [number, number];
+  startBinding: null | string;
+  endBinding: null | string;
+  startArrowhead: null | string;
+  endArrowhead: null | string;
 }

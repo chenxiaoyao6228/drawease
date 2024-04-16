@@ -31,7 +31,7 @@ const DrawEaseApp = (props: DrawEaseAppProps) => {
     onBoardInited && onBoardInited(board);
   }, [containerRef, onBoardInited, initialData]);
 
-  return <div id="drawease-container" ref={containerRef}></div>;
+  return <div id="drawease-app-container" ref={containerRef}></div>;
 };
 
 export default DrawEaseApp;
