@@ -1,6 +1,18 @@
+export interface Point {
+  x: number;
+  y: number;
+}
+
+// ----- 配置相关 -------
+export interface Options {
+  container: HTMLElement;
+  width?: number;
+  height?: number;
+}
+
+// ----- element相关 -------
 export type FillStyle = 'hachure' | 'cross-hatch' | 'solid' | 'zigzag';
 export type StrokeStyle = 'solid' | 'dashed' | 'dotted';
-
 export interface BaseElementData {
   id: string;
   type: string;
@@ -55,4 +67,17 @@ export interface ArrowElementData extends BaseElementData {
   endBinding: null | string;
   startArrowhead: null | string;
   endArrowhead: null | string;
+}
+
+// ----- Tool相关 -------
+export interface Tool {
+  type: string; //工具类型
+  pointerDown(event: PointerEvent): void;
+  pointerMove(event: PointerEvent): void;
+  pointerUp(event: PointerEvent): void;
+}
+
+export enum ToolType {
+  Select = 'select',
+  Rect = 'Rect'
 }

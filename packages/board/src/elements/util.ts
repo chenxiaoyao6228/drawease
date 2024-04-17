@@ -22,3 +22,7 @@ export function createElement(data: BaseElementData): BaseElement {
       throw new Error(`Unknown element type: ${data.type}`);
   }
 }
+
+export function getDefaultElementData() {
+  return {} as BaseElementData;
+}

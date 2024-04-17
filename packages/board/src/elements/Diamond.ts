@@ -15,9 +15,8 @@ export default class DiamondElement extends BaseElement {
     const roughOptions = {
       stroke: strokeColor,
       strokeWidth: strokeWidth,
-      fill: fillStyle === 'solid' ? fillStyle : 'transparent',
-      fillStyle: fillStyle === 'solid' ? 'solid' : 'cross-hatch',
-      roughness: roughness || 1
+      roughness: roughness || 1,
+      ...(fillStyle && { fillStyle })
     };
 
     const path = [

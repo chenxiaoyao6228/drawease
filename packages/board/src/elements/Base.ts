@@ -23,7 +23,7 @@ export default abstract class BaseElement implements IBaseElement {
   getData() {
     return this._data;
   }
-  setData(data: BaseElementData) {
+  setData(data: Partial<BaseElementData>) {
     this._data = {
       ...this._data,
       ...data

@@ -10,9 +10,15 @@ export default class EllipseElement extends BaseElement {
     const { rc, ctx } = renderConfig;
     const { width, height, x, y, fillStyle, strokeColor, strokeWidth, roughness = 1, strokeStyle } = this._data as EllipseElementData;
 
+    const roughOptions = {
+      stroke: strokeColor,
+      strokeWidth: strokeWidth,
+      roughness: roughness || 1,
+      ...(fillStyle && { fillStyle })
+    };
+
     ctx.save();
-    ctx.fillStyle = fillStyle;
-    rc.ellipse(x + width / 2, y + height / 2, width, height, { stroke: strokeColor, strokeWidth, roughness });
+    rc.ellipse(x + width / 2, y + height / 2, width, height, roughOptions);
     ctx.fill();
     ctx.restore();
   }

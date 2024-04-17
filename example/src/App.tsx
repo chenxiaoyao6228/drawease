@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div className="App">
       {/* 其他组件 */}
-      <DrawEaseApp initialData={initialData} />
+      <DrawEaseApp />
     </div>
   );
 };

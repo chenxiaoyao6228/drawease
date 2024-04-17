@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
     "strict": true,
     "declaration": true,
@@ -14,25 +14,12 @@
     "noEmit": false,
     "baseUrl": ".",
     "paths": {
-      "@drawease/app/*": [
-        "packages/app/src/*"
-      ],
-      "@drawease/components/*": [
-        "packages/components/src/*"
-      ],
-      "@drawease/board/*": [
-        "packages/board/src/*"
-      ],
-      "@drawease/utils/*": [
-        "packages/utils/src/*"
-      ],
-      "@drawease/*": [
-        "packages/*/src"
-      ]
+      "@drawease/app/*": ["packages/app/src/*"],
+      "@drawease/components/*": ["packages/components/src/*"],
+      "@drawease/board/*": ["packages/board/src/*"],
+      "@drawease/utils/*": ["packages/utils/src/*"],
+      "@drawease/*": ["packages/*/src"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "exclude": ["node_modules", "dist"]
 }
