@@ -1,16 +1,15 @@
 import { RoughCanvas } from 'roughjs/bin/canvas';
 import rough from 'roughjs/bin/rough';
 
-import { Board } from './Board';
-import { IBaseElement } from './elements/Base';
-import { createElement } from './elements/util';
-import { BaseElementData, Options } from './types';
+import { Board } from '../Board';
+import { IBaseElement } from '../elements/Base';
+import { createElement } from '../elements/util';
+import { BaseElementData, Options, SceneData } from '../types';
+import { DataManager } from '../utils/DataManager';
 
 export class Scene {
   innerCanvasesContainer!: HTMLElement;
   private _app: Board;
-  private _options: Options;
-  private _container: HTMLElement;
   private _elements: IBaseElement[] = [];
   private _interactiveCanvas!: HTMLCanvasElement;
   private _interactiveCtx!: CanvasRenderingContext2D;
@@ -19,18 +18,25 @@ export class Scene {
   private _staticCtx!: CanvasRenderingContext2D;
   private _staticRC!: RoughCanvas;
   private _animationFrameId: number | null = null;
-  private _width!: number;
-  private _height!: number;
+  private _dataManager: DataManager<SceneData>;
 
   constructor(app: Board, options: Options) {
     this._app = app;
-    this._options = options;
-    this._container = options.container;
-    this.initCanvases(options);
+    this._dataManager = new DataManager({
+      width: options.width || window.innerWidth,
+      height: options.height || window.innerHeight,
+      zoom: { value: 1 },
+      offsetLeft: 0,
+      offsetTop: 0,
+      scrollX: 0,
+      scrollY: 0
+    });
+    this.initCanvases(options.container);
   }
 
-  private initCanvases(options: Options) {
-    const { width = window.innerWidth, height = window.innerHeight, container } = options;
+  private initCanvases(container: HTMLElement) {
+    const width = this._dataManager.getValue('width');
+    const height = this._dataManager.getValue('height');
 
     // Initialize canvas wrapper
     const innerCanvasesContainer = document.createElement('div');
@@ -79,26 +85,13 @@ export class Scene {
 
     innerCanvasesContainer.appendChild(this._staticCanvas);
     this._staticRC = rough.canvas(this._staticCanvas);
-
-    const dpr = window.devicePixelRatio || 1;
-    const scaledWidth = width * dpr;
-    const scaledHeight = height * dpr;
-
-    this._interactiveCtx.scale(dpr, dpr);
-    this._interactiveCtx.clearRect(0, 0, scaledWidth, scaledHeight);
-
-    this._staticCtx.scale(dpr, dpr);
-    this._staticCtx.clearRect(0, 0, scaledWidth, scaledHeight);
-
-    this._width = width;
-    this._height = height;
   }
 
   clearInteractiveCanvas() {
-    this._interactiveCtx.clearRect(0, 0, this._width, this._height);
+    const { width, height } = this._dataManager.getValues(['width', 'height']);
+    this._interactiveCtx.clearRect(0, 0, width!, height!);
   }
 
-  // render interactive element
   renderInteractiveElement(elements: IBaseElement) {
     this.clearInteractiveCanvas();
     const _elements = Array.isArray(elements) ? elements : [elements];
@@ -111,7 +104,6 @@ export class Scene {
     });
   }
 
-  // render static element
   private renderStaticElements(ctx: CanvasRenderingContext2D, elements: IBaseElement[]) {
     console.log('[board]: renderStaticElements----->');
     elements.forEach((element) => {
@@ -126,7 +118,8 @@ export class Scene {
   renderAll() {
     cancelAnimationFrame(this._animationFrameId!);
     this._animationFrameId = requestAnimationFrame(() => {
-      this._staticCtx.clearRect(0, 0, this._width, this._height);
+      const { width, height } = this._dataManager.getValues(['width', 'height']);
+      this._staticCtx.clearRect(0, 0, width!, height!);
       this.renderStaticElements(this._staticCtx, this._elements);
     });
   }

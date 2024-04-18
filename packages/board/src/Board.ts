@@ -1,5 +1,5 @@
 import { createElement } from './elements/util';
-import { Scene } from './Scene';
+import { Scene } from './scene/Scene';
 import ToolManager from './tools';
 import { BaseElementData, Options } from './types';
 

@@ -9,7 +9,7 @@ export default class RectElement extends BaseElement {
   render(renderConfig: RenderConfig) {
     const { rc, ctx } = renderConfig;
 
-    const { x, y, width, height, fillStyle, strokeColor, strokeWidth, strokeStyle, roughness = 1 } = this._data as RectElementData;
+    const { x, y, width, height, fillStyle, strokeColor, strokeWidth, strokeStyle, roughness = 1 } = this.getData() as RectElementData;
 
     ctx.save();
     ctx.fillStyle = fillStyle;

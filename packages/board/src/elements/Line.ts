@@ -9,7 +9,7 @@ export default class LineElement extends BaseElement {
   render(renderConfig: RenderConfig) {
     const { rc, ctx } = renderConfig;
 
-    const { x, y, points, strokeColor, strokeWidth, roughness = 1 } = this._data as LineElementData;
+    const { x, y, points, strokeColor, strokeWidth, roughness = 1 } = this.getData() as LineElementData;
 
     ctx.save();
     ctx.translate(x, y);

@@ -8,7 +8,7 @@ export default class DiamondElement extends BaseElement {
 
   render(config: RenderConfig) {
     const { ctx, rc } = config;
-    const { x, y, width, height, strokeColor, strokeWidth, fillStyle, roughness } = this._data as DiamondElementData;
+    const { x, y, width, height, strokeColor, strokeWidth, fillStyle, roughness } = this.getData() as DiamondElementData;
 
     ctx.save();
 

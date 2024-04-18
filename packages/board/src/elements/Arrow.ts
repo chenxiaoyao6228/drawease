@@ -9,7 +9,7 @@ export default class ArrowElement extends BaseElement {
   render(renderConfig: RenderConfig) {
     const { rc, ctx } = renderConfig;
 
-    const { points, x, y, strokeColor, fillStyle, strokeWidth, roughness = 1 } = this._data as ArrowElementData;
+    const { points, x, y, strokeColor, fillStyle, strokeWidth, roughness = 1 } = this.getData() as ArrowElementData;
 
     ctx.save();
     ctx.translate(x, y);

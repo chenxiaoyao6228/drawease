@@ -84,3 +84,19 @@ export enum ToolType {
   Ellipse = 'Ellipse',
   Line = 'Line'
 }
+
+// ------ Scene ---------
+
+export interface Zoom {
+  value: number;
+}
+
+export interface SceneData {
+  width: number;
+  height: number;
+  zoom: Zoom;
+  offsetLeft: number;
+  offsetTop: number;
+  scrollX: number;
+  scrollY: number;
+}

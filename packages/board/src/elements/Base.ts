@@ -1,7 +1,7 @@
-// https://github.com/rough-stuff/rough/wiki
 import { RoughCanvas } from 'roughjs/bin/canvas';
 
 import { BaseElementData } from '../types';
+import { DataManager } from '../utils/DataManager';
 
 export interface RenderConfig {
   rc: RoughCanvas;
@@ -16,19 +16,20 @@ export interface IBaseElement {
 }
 
 export default abstract class BaseElement implements IBaseElement {
-  protected _data;
+  protected _dataManager: DataManager<BaseElementData>;
+
   constructor(data: BaseElementData) {
-    this._data = data;
+    this._dataManager = new DataManager(data);
   }
+
   getData() {
-    return this._data;
+    return this._dataManager.getData();
   }
+
   setData(data: Partial<BaseElementData>) {
-    this._data = {
-      ...this._data,
-      ...data
-    };
+    this._dataManager.setData(data);
   }
+
   render(renderConfig: RenderConfig) {
     throw new Error('Each element should implement a render function!');
   }

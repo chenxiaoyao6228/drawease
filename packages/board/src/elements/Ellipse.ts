@@ -8,7 +8,7 @@ export default class EllipseElement extends BaseElement {
 
   render(renderConfig: RenderConfig) {
     const { rc, ctx } = renderConfig;
-    const { width, height, x, y, fillStyle, strokeColor, strokeWidth, roughness = 1, strokeStyle } = this._data as EllipseElementData;
+    const { width, height, x, y, fillStyle, strokeColor, strokeWidth, roughness = 1, strokeStyle } = this.getData() as EllipseElementData;
 
     const roughOptions = {
       stroke: strokeColor,
