@@ -9,12 +9,18 @@ export default class RectElement extends BaseElement {
   render(renderConfig: RenderConfig) {
     const { rc, ctx } = renderConfig;
 
-    const { x, y, width, height, fillStyle, strokeColor, strokeWidth, strokeStyle, roughness = 1 } = this.getData() as RectElementData;
+    const { x, y, width, height, fillStyle, strokeColor, strokeWidth, strokeStyle, roughness = 1, seed } = this.getData() as RectElementData;
+
+    const roughOptions = {
+      seed,
+      stroke: strokeColor,
+      strokeWidth: strokeWidth,
+      roughness: roughness || 1,
+      ...(fillStyle && { fillStyle })
+    };
 
     ctx.save();
-    ctx.fillStyle = fillStyle;
-    rc.rectangle(x, y, width, height, { stroke: strokeColor, strokeWidth, roughness });
-    ctx.fill();
+    rc.rectangle(x, y, width, height, roughOptions);
     ctx.restore();
   }
 }

@@ -1,4 +1,5 @@
 import { ArrowElementData, BaseElementData, DiamondElementData, EllipseElementData, LineElementData, RectElementData } from '../types';
+import { randomInteger } from '../utils';
 import ArrowElement from './Arrow';
 import BaseElement from './Base';
 import DiamondElement from './Diamond';
@@ -9,7 +10,8 @@ import RectElement from './Rect';
 export function createElement(data: Partial<BaseElementData>): BaseElement {
   const _data = {
     ...getDefaultElementData(),
-    ...data
+    ...data,
+    seed: randomInteger()
   };
   switch (data.type) {
     case 'rectangle':

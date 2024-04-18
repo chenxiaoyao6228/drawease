@@ -8,9 +8,10 @@ export default class EllipseElement extends BaseElement {
 
   render(renderConfig: RenderConfig) {
     const { rc, ctx } = renderConfig;
-    const { width, height, x, y, fillStyle, strokeColor, strokeWidth, roughness = 1, strokeStyle } = this.getData() as EllipseElementData;
+    const { width, height, x, y, fillStyle, strokeColor, strokeWidth, roughness = 1, strokeStyle, seed } = this.getData() as EllipseElementData;
 
     const roughOptions = {
+      seed,
       stroke: strokeColor,
       strokeWidth: strokeWidth,
       roughness: roughness || 1,

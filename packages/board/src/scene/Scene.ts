@@ -134,4 +134,8 @@ export class Scene {
     const elements = datas.map((data) => createElement(data));
     this.addElements(elements);
   }
+
+  getElementDatas() {
+    return this._elements.map((element) => element.getData());
+  }
 }

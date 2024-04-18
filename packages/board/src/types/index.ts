@@ -35,6 +35,8 @@ export interface BaseElementData {
   isDeleted: boolean;
   version: number;
   versionNonce: number;
+  // seed
+  seed: number; // 保证rough.js每次重新渲染的时候形状不变
 }
 
 export interface RectElementData extends BaseElementData {
