@@ -1,7 +1,12 @@
+import { Board } from '../Board';
 import { Tool, ToolType } from '../types';
 
 export class SelectTool implements Tool {
+  _app: Board;
   type: ToolType = ToolType.Select;
+  constructor(app: Board) {
+    this._app = app;
+  }
 
   pointerDown(event: PointerEvent) {
     console.log('选择工具：鼠标按下事件');

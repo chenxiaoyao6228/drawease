@@ -71,7 +71,7 @@ export interface ArrowElementData extends BaseElementData {
 
 // ----- Tool相关 -------
 export interface Tool {
-  type: string; //工具类型
+  type: ToolType; //工具类型
   pointerDown(event: PointerEvent): void;
   pointerMove(event: PointerEvent): void;
   pointerUp(event: PointerEvent): void;
@@ -79,5 +79,8 @@ export interface Tool {
 
 export enum ToolType {
   Select = 'select',
-  Rect = 'Rect'
+  Rect = 'Rect',
+  Diamond = 'Diamond',
+  Ellipse = 'Ellipse',
+  Line = 'Line'
 }

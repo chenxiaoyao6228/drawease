@@ -1,6 +1,10 @@
 // import { Button } from '@drawease/components';
 import { BaseElementData, Board } from '@drawease/board';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+
+import Editor from './Editor';
+import { EditorProvider, useEditor } from './Editor/editorContext';
+import ToolBar from './ToolBar';
 
 // 給外部暴露的接口
 interface DrawEaseAppProps {
@@ -9,29 +13,14 @@ interface DrawEaseAppProps {
 }
 
 const DrawEaseApp = (props: DrawEaseAppProps) => {
-  const { onBoardInited, initialData } = props;
-  const containerRef = useRef<HTMLDivElement | null>();
-  const BoardRef = useRef<Board | null>(null);
-
-  useEffect(() => {
-    if (!containerRef.current || BoardRef.current) {
-      return;
-    }
-
-    const board = new Board({
-      container: containerRef.current
-    });
-
-    if (initialData) {
-      board.loadDatas(initialData);
-    }
-
-    BoardRef.current = board;
-
-    onBoardInited && onBoardInited(board);
-  }, [containerRef, onBoardInited, initialData]);
-
-  return <div id="drawease-app-container" ref={containerRef}></div>;
+  return (
+    <EditorProvider>
+      <div id="drawease-app-container">
+        <ToolBar />
+        <Editor {...props} />
+      </div>
+    </EditorProvider>
+  );
 };
 
 export default DrawEaseApp;

@@ -19,7 +19,6 @@ export default class EllipseElement extends BaseElement {
 
     ctx.save();
     rc.ellipse(x + width / 2, y + height / 2, width, height, roughOptions);
-    ctx.fill();
     ctx.restore();
   }
 }
