@@ -64,7 +64,15 @@ const ToolBar = () => {
   }, [editor, setActiveType]);
 
   return (
-    <div id="drawease-toolbar">
+    <div
+      id="drawease-toolbar"
+      style={{
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        zIndex: 100
+      }}
+    >
       {Tools.map((tool) => (
         <button
           key={tool.type}

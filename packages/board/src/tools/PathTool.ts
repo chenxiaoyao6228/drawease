@@ -27,7 +27,8 @@ export class LineTool implements Tool {
       strokeColor: 'black',
       strokeWidth: 2
     });
-    this._app.scene.addElements(this.currentElement);
+    // Render the current element onto the interactive canvas
+    this._app.scene.renderInteractiveElement(this.currentElement);
   }
 
   pointerMove(event: PointerEvent) {
@@ -43,14 +44,15 @@ export class LineTool implements Tool {
         ]
       });
       // Redraw the scene
-      this._app.scene.renderAll();
+      this._app.scene.renderInteractiveElement(this.currentElement);
     }
   }
 
   pointerUp(event: PointerEvent) {
     console.log(`${this.type} tool: Pointer up event`);
     if (this.currentElement) {
-      // Clear the tracking object
+      this._app.scene.clearInteractiveCanvas();
+      this._app.scene.addElements(this.currentElement);
       this.currentElement = null;
     }
   }

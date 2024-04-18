@@ -30,7 +30,7 @@ export class ShapeTool implements Tool {
       strokeColor: 'black',
       strokeWidth: 2
     });
-    this._app.scene.addElements(this.currentElement);
+    this._app.scene.renderInteractiveElement(this.currentElement);
   }
 
   pointerMove(event: PointerEvent) {
@@ -41,7 +41,7 @@ export class ShapeTool implements Tool {
       // 更新元素的宽度和高度
       this.currentElement.setData({ width, height });
       // 重新绘制
-      this._app.scene.renderAll();
+      this._app.scene.renderInteractiveElement(this.currentElement);
     }
   }
 
@@ -49,6 +49,8 @@ export class ShapeTool implements Tool {
     console.log(`${this.type} 工具：鼠标松开事件`);
     if (this.currentElement) {
       // 清空元素的跟踪对象
+      this._app.scene.clearInteractiveCanvas();
+      this._app.scene.addElements(this.currentElement);
       this.currentElement = null;
     }
   }

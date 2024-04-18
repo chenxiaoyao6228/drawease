@@ -53,15 +53,15 @@ export default class ToolManager {
 
     window.addEventListener('pointerdown', pointerDownHandler);
 
-    this._app.scene.canvas.addEventListener('pointermove', pointerMoveHandler);
-    this._app.scene.canvas.addEventListener('pointerup', pointerUpHandler);
-    this._app.scene.canvas.addEventListener('pointerout', pointerOutHandler);
+    this._app.scene.innerCanvasesContainer.addEventListener('pointermove', pointerMoveHandler);
+    this._app.scene.innerCanvasesContainer.addEventListener('pointerup', pointerUpHandler);
+    this._app.scene.innerCanvasesContainer.addEventListener('pointerout', pointerOutHandler);
 
     this._eventHandlersToDestroy.push(() => {
       window.removeEventListener('pointerdown', pointerDownHandler);
-      this._app.scene.canvas.removeEventListener('pointermove', pointerMoveHandler);
-      this._app.scene.canvas.removeEventListener('pointerup', pointerUpHandler);
-      this._app.scene.canvas.removeEventListener('pointerout', pointerOutHandler);
+      this._app.scene.innerCanvasesContainer.removeEventListener('pointermove', pointerMoveHandler);
+      this._app.scene.innerCanvasesContainer.removeEventListener('pointerup', pointerUpHandler);
+      this._app.scene.innerCanvasesContainer.removeEventListener('pointerout', pointerOutHandler);
     });
   }
 
