@@ -6,14 +6,7 @@ import initialData from './mockData';
 
 const App = () => {
   return (
-    <div
-      className="App"
-      style={{
-        width: '100vw',
-        height: '100vh'
-      }}
-    >
-      {/* 其他组件 */}
+    <div className="app">
       <DrawEaseApp />
     </div>
   );

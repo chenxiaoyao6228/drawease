@@ -30,12 +30,23 @@ const Editor = (props: EditorProps) => {
 
     setEditor(board);
 
+    // @ts-expect-error 临时全局调试
+    window.board = board;
+
     BoardRef.current = board;
 
     onBoardInited && onBoardInited(board);
   }, [containerRef, onBoardInited, initialData, setEditor]);
 
-  return <div className="drawease-board-container" ref={containerRef}></div>;
+  return (
+    <div
+      className="drawease-board-container"
+      style={{
+        height: '100%'
+      }}
+      ref={containerRef}
+    ></div>
+  );
 };
 
 export default Editor;

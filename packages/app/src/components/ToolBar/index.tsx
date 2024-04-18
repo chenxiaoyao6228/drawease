@@ -68,8 +68,10 @@ const ToolBar = () => {
       id="drawease-toolbar"
       style={{
         position: 'fixed',
-        left: 0,
         top: 0,
+        left: 0,
+        right: 0,
+        margin: '0 auto',
         zIndex: 100
       }}
     >

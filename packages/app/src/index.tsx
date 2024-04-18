@@ -3,9 +3,9 @@ import './index.css';
 import { BaseElementData, Board } from '@drawease/board';
 import React from 'react';
 
-import Editor from './Editor';
-import { EditorProvider } from './Editor/editorContext';
-import ToolBar from './ToolBar';
+import Editor from './components/Editor';
+import { EditorProvider } from './components/Editor/editorContext';
+import ToolBar from './components/ToolBar';
 
 // 給外部暴露的接口
 interface DrawEaseAppProps {
