@@ -1,3 +1,5 @@
+import { RoughCanvas } from 'roughjs/bin/canvas';
+
 export interface Point {
   x: number;
   y: number;
@@ -10,7 +12,27 @@ export interface Options {
   height?: number;
 }
 
-// ----- element相关 -------
+// ----- element相关 -----------
+export interface RenderConfig {
+  rc: RoughCanvas;
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+}
+
+export interface IBaseElement {
+  getData: () => BaseElementData;
+  setData: (data: BaseElementData) => void;
+  render: (renderConfig: RenderConfig) => void;
+}
+
+export interface ISelectableElement {
+  isSelected: boolean;
+  select(): void;
+  move(x: number, y: number): void;
+  rotate(angle: number): void;
+}
+
+// ----- elementData相关 -------
 export type FillStyle = 'hachure' | 'cross-hatch' | 'solid' | 'zigzag';
 export type StrokeStyle = 'solid' | 'dashed' | 'dotted';
 export interface BaseElementData {

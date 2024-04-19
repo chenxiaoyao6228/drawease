@@ -2,7 +2,7 @@ import { Board } from '../Board';
 import { Tool, ToolType } from '../types';
 import { EventEmitter } from '../utils/EventEmitter';
 import { LineTool } from './PathTool';
-import { SelectTool } from './SelectTool';
+import { SelectTool } from './select';
 import { DiamondTool, EllipseTool, RectTool } from './ShapeTool';
 import { isTargetCanvasElement } from './utils';
 

@@ -7,7 +7,7 @@ import initialData from './mockData';
 const App = () => {
   return (
     <div className="app">
-      <DrawEaseApp />
+      <DrawEaseApp initialData={initialData} />
     </div>
   );
 };
