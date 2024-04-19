@@ -1,5 +1,8 @@
+import RectElement from '@drawease/board/elements/Rect';
+
 import { Board } from '../../Board';
-import { ITool, ToolType } from '../../types';
+import { IBaseElement, IPoint, ITool, ToolType } from '../../types';
+import { MoveManager } from './moveManager';
 /*
 当处于选中工具态，用户在上用鼠标点击时，我们可能需要考虑以下情况：
     1. 直接选中一个元素： 单击鼠标选择 canvas 上的一个元素。
@@ -16,121 +19,70 @@ import { ITool, ToolType } from '../../types';
 
 export class SelectTool implements ITool {
   type: ToolType = ToolType.Select;
-  _app: Board;
-
-  // 状态
-  isSelected: boolean = false;
-  isDragging: boolean = false;
-  isSelectingArea: boolean = false;
-  isControlPointSelected: boolean = false;
-  isShiftKeyPressed: boolean = false;
-  isDoubleClicking: boolean = false;
-  isHovering: boolean = false;
+  private _app: Board;
+  private _moveManager: MoveManager;
+  private _initialPointerPosition: IPoint = { x: 0, y: 0 };
 
   constructor(app: Board) {
     this._app = app;
+    this._moveManager = new MoveManager(app);
   }
 
   pointerDown(event: PointerEvent) {
     console.log('选择工具：鼠标按下事件');
+    // 记录初始pointerDownState
+    this._initialPointerPosition = {
+      x: event.clientX,
+      y: event.clientY
+    };
 
-    // 处理鼠标按下事件，在选择工具下执行的操作
-    if (!this.isSelected) {
-      // 未选中元素时的处理
-      // 可以判断是否按住 Shift 键以进行多选
-      this.isShiftKeyPressed = event.shiftKey;
-      // 判断是否选中了控制点
-      this.isControlPointSelected = this.detectControlPoint(event);
-      // 判断是否双击
-      if (event.detail === 2) {
-        this.isDoubleClicking = true;
+    // Check if Shift key is pressed
+    const isShiftPressed = event.shiftKey;
+
+    // Check if a rectangle element is clicked
+    const elementHit = this.detectElementHit(event);
+    if (elementHit instanceof RectElement) {
+      if (isShiftPressed) {
+        // Toggle selection status of the clicked element
+        this._app.selectedElementsManager.toggleElementSelection(elementHit);
+      } else {
+        // Deselect all other elements and select the clicked element
+        this._app.selectedElementsManager.selectSingleElement(elementHit);
       }
     } else {
-      // 已选中元素时的处理
-      // 判断是否点击了选中的元素以外的区域
-      const clickedOutside = !this.detectElementClick(event);
-      if (clickedOutside) {
-        this.isSelected = false; // 取消选择
+      // Clicked on the blank area of the canvas
+      if (!isShiftPressed) {
+        // Deselect all elements if Shift is not pressed
+        this._app.selectedElementsManager.deselectAllElements();
       }
-      // 判断是否按住 Shift 键以进行多选
-      this.isShiftKeyPressed = event.shiftKey;
-      // 判断是否点击了控制点
-      this.isControlPointSelected = this.detectControlPoint(event);
     }
+
+    this._app.scene.renderAll();
   }
 
   pointerMove(event: PointerEvent) {
     console.log('选择工具：鼠标移动事件');
 
-    // 处理鼠标移动事件，在选择工具下执行的操作
-    if (this.isDragging) {
-      // 拖拽选中的元素
-      this.dragSelectedElements(event);
-    } else if (this.isSelectingArea) {
-      // 创建选区
-      this.createSelectionArea(event);
-    } else {
-      // 其他情况下的处理
-      // 判断是否悬停在元素上
-      this.isHovering = this.detectHover(event);
+    if (this._app.selectedElementsManager.getSelectedElements().length > 0) {
+      const dx = event.clientX - this._initialPointerPosition.x;
+      const dy = event.clientY - this._initialPointerPosition.y;
+      this._moveManager.moveSelectedElements(this._app.selectedElementsManager.getSelectedElements(), dx, dy);
+      this._initialPointerPosition = { x: event.clientX, y: event.clientY };
     }
   }
 
   pointerUp(event: PointerEvent) {
     console.log('选择工具：鼠标松开事件');
+    console.log('this._app.selectedElementsManager.getSelectedElements()', this._app.selectedElementsManager.getSelectedElements());
+  }
 
-    // 处理鼠标松开事件，在选择工具下执行的操作
-    if (!this.isSelected) {
-      // 未选中元素时的处理
-      if (!this.isDragging && !this.isDoubleClicking) {
-        // 如果不是拖拽操作或双击操作，则可能是点击空白区域
-        this.clearSelection(); // 清除选择
-      }
-    } else {
-      // 已选中元素时的处理
-      if (this.isDragging) {
-        // 停止拖拽
-        this.isDragging = false;
-      }
-      if (this.isSelectingArea) {
-        // 停止创建选区
-        this.isSelectingArea = false;
-      }
-      if (this.isDoubleClicking) {
-        // 如果是双击操作，则取消双击状态
-        this.isDoubleClicking = false;
+  private detectElementHit(event: PointerEvent): IBaseElement | null {
+    const res = [];
+    for (const element of this._app.scene.getElements()) {
+      if (element.hitTest(event)) {
+        res.unshift(element);
       }
     }
-  }
-
-  private detectControlPoint(event: PointerEvent): boolean {
-    // 判断是否点击了元素的控制点
-    return false; // 仅作示例，需要根据实际情况实现
-  }
-
-  private detectElementClick(event: PointerEvent): boolean {
-    // 判断是否点击了选中的元素以外的区域
-    return false; // 仅作示例，需要根据实际情况实现
-  }
-
-  private detectHover(event: PointerEvent): boolean {
-    // 判断是否悬停在元素上
-    return false; // 仅作示例，需要根据实际情况实现
-  }
-
-  private clearSelection() {
-    // 清除选择
-    this.isSelected = false;
-    // 其他清除操作
-  }
-
-  private dragSelectedElements(event: PointerEvent) {
-    // 拖拽选中的元素
-    // 需要根据鼠标移动的距离来移动选中的元素
-  }
-
-  private createSelectionArea(event: PointerEvent) {
-    // 创建选区
-    // 需要根据鼠标移动的距离来绘制选区
+    return res.length > 0 ? res[0] : null;
   }
 }

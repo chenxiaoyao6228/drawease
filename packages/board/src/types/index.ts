@@ -38,3 +38,8 @@ export interface ISceneData {
   scrollX: number;
   scrollY: number;
 }
+
+export interface IPoint {
+  x: number;
+  y: number;
+}

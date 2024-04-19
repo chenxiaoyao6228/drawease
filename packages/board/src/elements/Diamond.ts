@@ -31,4 +31,5 @@ export default class DiamondElement extends BaseElement {
 
     ctx.restore();
   }
+  getOBB(): { x: number; y: number; width: number; height: number; angle: number } {}
 }

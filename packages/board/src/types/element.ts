@@ -75,14 +75,10 @@ export interface IRenderConfig {
 }
 
 export interface IBaseElement {
+  setSelected: (selected: boolean) => void;
   getData: () => IBaseElementData;
   setData: (data: IBaseElementData) => void;
   render: (renderConfig: IRenderConfig) => void;
-}
-
-export interface ISelectableElement {
-  isSelected: boolean;
-  select(): void;
+  hitTest: (e: PointerEvent) => boolean;
   move(x: number, y: number): void;
-  rotate(angle: number): void;
 }

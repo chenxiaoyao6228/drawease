@@ -86,6 +86,8 @@ export class Scene {
     this._staticRC = rough.canvas(this._staticCanvas);
   }
 
+  // 渲染相关
+
   clearInteractiveCanvas() {
     const { width, height } = this._dataManager.getValues(['width', 'height']);
     this._interactiveCtx.clearRect(0, 0, width!, height!);
@@ -114,6 +116,8 @@ export class Scene {
     });
   }
 
+  // TODO: selectionBorder要渲染到哪一层画布上？
+
   renderAll() {
     cancelAnimationFrame(this._animationFrameId!);
     this._animationFrameId = requestAnimationFrame(() => {
@@ -123,6 +127,7 @@ export class Scene {
     });
   }
 
+  // 数据处理
   addElements(elements: IBaseElement | IBaseElement[]) {
     const _elements = Array.isArray(elements) ? elements : [elements];
     this._elements = this._elements.concat(_elements);
@@ -136,5 +141,9 @@ export class Scene {
 
   getElementDatas() {
     return this._elements.map((element) => element.getData());
+  }
+
+  getElements() {
+    return this._elements;
   }
 }

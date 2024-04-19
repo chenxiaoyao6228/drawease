@@ -24,4 +24,9 @@ export default class LineElement extends BaseElement {
     rc.line(points[0][0], points[0][1], points[1][0], points[1][1], roughOptions);
     ctx.restore();
   }
+
+  getOBB(): { x: number; y: number; width: number; height: number; angle: number } {
+    // Calculate OBB for LineElement
+    // You need to implement this based on the specific shape and properties of LineElement
+  }
 }

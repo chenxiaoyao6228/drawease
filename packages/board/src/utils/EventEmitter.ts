@@ -1,17 +1,17 @@
 type EventData = Record<string, any>;
-interface CallbackFn {
+interface ICallbackFn {
   (data?: EventData): void;
   ONCE?: boolean;
 }
 
 export class EventEmitter {
-  listeners: Record<string, CallbackFn[]>;
+  listeners: Record<string, ICallbackFn[]>;
   uuid: number;
   constructor() {
     this.listeners = {};
     this.uuid = 0;
   }
-  on = (name: string, callback: CallbackFn) => {
+  on = (name: string, callback: ICallbackFn) => {
     // 这里也可以使用二维数组的形式[[],[]], 取消事件的时候将该项的索引设置为null
     // 可以避免在遍历是删除元素带来的问题
     this.listeners[name] = this.listeners[name] || {};
@@ -29,12 +29,12 @@ export class EventEmitter {
         }
       });
   }
-  once(name: string, callback: CallbackFn) {
+  once(name: string, callback: ICallbackFn) {
     const callbackWrapper = () => callback();
     callbackWrapper.ONCE = true;
     this.on(name, callbackWrapper);
   }
-  off(name: string, listener: CallbackFn) {
+  off(name: string, listener: ICallbackFn) {
     this.listeners[name] &&
       Object.keys(this.listeners[name]).forEach((key) => {
         const index = key as unknown as number;
