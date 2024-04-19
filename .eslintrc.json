@@ -1,23 +1,21 @@
 {
   "root": true,
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react-hooks/recommended",
-    "prettier"
-  ],
-  "plugins": [
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "simple-import-sort"
-  ],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:react-hooks/recommended", "prettier"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "simple-import-sort"],
   "parser": "@typescript-eslint/parser",
   "rules": {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "no-duplicate-imports": "error",
     "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-explicit-any": 0
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "prefix": ["I"]
+      }
+    ]
   }
 }

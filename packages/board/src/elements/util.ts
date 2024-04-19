@@ -1,4 +1,4 @@
-import { ArrowElementData, BaseElementData, DiamondElementData, EllipseElementData, LineElementData, RectElementData } from '../types';
+import { IArrowElementData, IBaseElementData, IDiamondElementData, IEllipseElementData, ILineElementData, IRectElementData } from '../types';
 import { randomInteger } from '../utils';
 import ArrowElement from './Arrow';
 import BaseElement from './Base';
@@ -7,7 +7,7 @@ import EllipseElement from './Ellipse';
 import LineElement from './Line';
 import RectElement from './Rect';
 
-export function createElement(data: Partial<BaseElementData>): BaseElement {
+export function createElement(data: Partial<IBaseElementData>): BaseElement {
   const _data = {
     ...getDefaultElementData(),
     ...data,
@@ -15,15 +15,15 @@ export function createElement(data: Partial<BaseElementData>): BaseElement {
   };
   switch (data.type) {
     case 'rectangle':
-      return new RectElement(_data as RectElementData);
+      return new RectElement(_data as IRectElementData);
     case 'ellipse':
-      return new EllipseElement(_data as EllipseElementData);
+      return new EllipseElement(_data as IEllipseElementData);
     case 'line':
-      return new LineElement(_data as LineElementData);
+      return new LineElement(_data as ILineElementData);
     case 'diamond':
-      return new DiamondElement(_data as DiamondElementData);
+      return new DiamondElement(_data as IDiamondElementData);
     case 'arrow':
-      return new ArrowElement(_data as ArrowElementData);
+      return new ArrowElement(_data as IArrowElementData);
     default:
       throw new Error(`Unknown element type: ${_data.type}`);
   }
@@ -39,5 +39,5 @@ export function getDefaultElementData() {
     roughness: 1,
     opacity: 100,
     locked: false
-  } as Partial<BaseElementData>;
+  } as Partial<IBaseElementData>;
 }

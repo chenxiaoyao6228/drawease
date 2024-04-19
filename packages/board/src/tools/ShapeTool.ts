@@ -1,13 +1,13 @@
 import { Board } from '../Board';
 import BaseElement from '../elements/Base';
 import { createElement } from '../elements/util';
-import { Point, Tool, ToolType } from '../types';
+import { IPoint, ITool, ToolType } from '../types';
 
 // 定义通用图形工具类
-export class ShapeTool implements Tool {
+export class ShapeTool implements ITool {
   private _app: Board;
   type: ToolType;
-  startPoint!: Point;
+  startPoint!: IPoint;
   currentElement: BaseElement | null = null; // 用于跟踪当前绘制的元素
   elementType: ElementType;
 

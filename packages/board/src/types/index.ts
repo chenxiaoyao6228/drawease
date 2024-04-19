@@ -1,100 +1,14 @@
-import { RoughCanvas } from 'roughjs/bin/canvas';
-
-export interface Point {
-  x: number;
-  y: number;
-}
+export * from './element';
 
 // ----- 配置相关 -------
-export interface Options {
+export interface IOptions {
   container: HTMLElement;
   width?: number;
   height?: number;
 }
 
-// ----- element相关 -----------
-export interface RenderConfig {
-  rc: RoughCanvas;
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-}
-
-export interface IBaseElement {
-  getData: () => BaseElementData;
-  setData: (data: BaseElementData) => void;
-  render: (renderConfig: RenderConfig) => void;
-}
-
-export interface ISelectableElement {
-  isSelected: boolean;
-  select(): void;
-  move(x: number, y: number): void;
-  rotate(angle: number): void;
-}
-
-// ----- elementData相关 -------
-export type FillStyle = 'hachure' | 'cross-hatch' | 'solid' | 'zigzag';
-export type StrokeStyle = 'solid' | 'dashed' | 'dotted';
-export interface BaseElementData {
-  id: string;
-  type: string;
-  // 布局相关属性
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  angle: number;
-  // 样式
-  strokeColor: string;
-  backgroundColor: string;
-  fillStyle: FillStyle;
-  strokeWidth: number;
-  strokeStyle: StrokeStyle;
-  roughness: number;
-  // roundness: null | { type: RoundnessType; value?: number }; // 暂不支持
-  opacity: number;
-  // 版本控制
-  isDeleted: boolean;
-  version: number;
-  versionNonce: number;
-  // seed
-  seed: number; // 保证rough.js每次重新渲染的时候形状不变
-}
-
-export interface RectElementData extends BaseElementData {
-  type: 'rectangle';
-}
-
-export interface EllipseElementData extends BaseElementData {
-  type: 'ellipse';
-}
-
-export interface LineElementData extends BaseElementData {
-  type: 'line';
-  points: [number, number][];
-  lastCommittedPoint: null | [number, number];
-  startBinding: null | string;
-  endBinding: null | string;
-  startArrowhead: null | string;
-  endArrowhead: null | string;
-}
-
-export interface DiamondElementData extends BaseElementData {
-  type: 'diamond';
-}
-
-export interface ArrowElementData extends BaseElementData {
-  type: 'arrow';
-  points: [number, number][];
-  lastCommittedPoint: null | [number, number];
-  startBinding: null | string;
-  endBinding: null | string;
-  startArrowhead: null | string;
-  endArrowhead: null | string;
-}
-
 // ----- Tool相关 -------
-export interface Tool {
+export interface ITool {
   type: ToolType; //工具类型
   pointerDown(event: PointerEvent): void;
   pointerMove(event: PointerEvent): void;
@@ -111,14 +25,14 @@ export enum ToolType {
 
 // ------ Scene ---------
 
-export interface Zoom {
+export interface IZoom {
   value: number;
 }
 
-export interface SceneData {
+export interface ISceneData {
   width: number;
   height: number;
-  zoom: Zoom;
+  zoom: IZoom;
   offsetLeft: number;
   offsetTop: number;
   scrollX: number;

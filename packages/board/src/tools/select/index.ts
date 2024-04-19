@@ -1,5 +1,5 @@
 import { Board } from '../../Board';
-import { Tool, ToolType } from '../../types';
+import { ITool, ToolType } from '../../types';
 /*
 当处于选中工具态，用户在上用鼠标点击时，我们可能需要考虑以下情况：
     1. 直接选中一个元素： 单击鼠标选择 canvas 上的一个元素。
@@ -14,7 +14,7 @@ import { Tool, ToolType } from '../../types';
     10. 按键组合操作： 在按住特定键的同时单击，执行不同的操作，如按住 Ctrl 键并单击以复制选定的元素。
 */
 
-export class SelectTool implements Tool {
+export class SelectTool implements ITool {
   type: ToolType = ToolType.Select;
   _app: Board;
 

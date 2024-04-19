@@ -18,7 +18,7 @@
     "build:app": "pnpm --filter @drawease/app build",
     "build": "pnpm run -r build",
     "test": "pnpm run -r test",
-    "lint": "eslint --fix --ext js,ts,tsx . ",
+    "lint": "eslint --fix --ext js,ts,tsx,json . ",
     "prepare": "husky"
   },
   "devDependencies": {

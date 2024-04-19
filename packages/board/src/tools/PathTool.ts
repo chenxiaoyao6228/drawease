@@ -1,12 +1,12 @@
 import { Board } from '../Board';
 import BaseElement from '../elements/Base';
 import { createElement } from '../elements/util';
-import { Point, Tool, ToolType } from '../types';
+import { IPoint, ITool, ToolType } from '../types';
 
-export class LineTool implements Tool {
+export class LineTool implements ITool {
   _app: Board;
   type: ToolType;
-  startPoint!: Point;
+  startPoint!: IPoint;
   currentElement: BaseElement | null = null; // Used to track the current line being drawn
 
   constructor(app: Board) {

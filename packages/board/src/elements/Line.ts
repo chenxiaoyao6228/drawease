@@ -1,15 +1,15 @@
-import { LineElementData } from '../types';
-import BaseElement, { RenderConfig } from './Base';
+import { ILineElementData, IRenderConfig } from '../types';
+import BaseElement from './Base';
 
 export default class LineElement extends BaseElement {
-  constructor(data: LineElementData) {
+  constructor(data: ILineElementData) {
     super(data);
   }
 
-  render(renderConfig: RenderConfig) {
+  render(renderConfig: IRenderConfig) {
     const { rc, ctx } = renderConfig;
 
-    const { x, y, points, strokeColor, strokeWidth, roughness = 1, seed, fillStyle } = this.getData() as LineElementData;
+    const { x, y, points, strokeColor, strokeWidth, roughness = 1, seed, fillStyle } = this.getData() as ILineElementData;
 
     const roughOptions = {
       seed,

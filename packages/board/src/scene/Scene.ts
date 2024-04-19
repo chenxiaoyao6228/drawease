@@ -2,9 +2,8 @@ import { RoughCanvas } from 'roughjs/bin/canvas';
 import rough from 'roughjs/bin/rough';
 
 import { Board } from '../Board';
-import { IBaseElement } from '../elements/Base';
 import { createElement } from '../elements/util';
-import { BaseElementData, Options, SceneData } from '../types';
+import { IBaseElement, IBaseElementData, IOptions, ISceneData } from '../types';
 import { DataManager } from '../utils/DataManager';
 
 export class Scene {
@@ -18,9 +17,9 @@ export class Scene {
   private _staticCtx!: CanvasRenderingContext2D;
   private _staticRC!: RoughCanvas;
   private _animationFrameId: number | null = null;
-  private _dataManager: DataManager<SceneData>;
+  private _dataManager: DataManager<ISceneData>;
 
-  constructor(app: Board, options: Options) {
+  constructor(app: Board, options: IOptions) {
     this._app = app;
     this._dataManager = new DataManager({
       width: options.width || window.innerWidth,
@@ -130,7 +129,7 @@ export class Scene {
     this.renderAll();
   }
 
-  loadDatas(datas: BaseElementData[]) {
+  loadDatas(datas: IBaseElementData[]) {
     const elements = datas.map((data) => createElement(data));
     this.addElements(elements);
   }

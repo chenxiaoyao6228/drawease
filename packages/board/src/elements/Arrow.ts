@@ -1,15 +1,15 @@
-import { ArrowElementData } from '../types';
-import BaseElement, { RenderConfig } from './Base';
+import { IArrowElementData, IRenderConfig } from '../types';
+import BaseElement from './Base';
 
 export default class ArrowElement extends BaseElement {
-  constructor(data: ArrowElementData) {
+  constructor(data: IArrowElementData) {
     super(data);
   }
 
-  render(renderConfig: RenderConfig) {
+  render(renderConfig: IRenderConfig) {
     const { rc, ctx } = renderConfig;
 
-    const { points, x, y, strokeColor, fillStyle, strokeWidth, roughness = 1, seed } = this.getData() as ArrowElementData;
+    const { points, x, y, strokeColor, fillStyle, strokeWidth, roughness = 1, seed } = this.getData() as IArrowElementData;
 
     ctx.save();
     ctx.translate(x, y);

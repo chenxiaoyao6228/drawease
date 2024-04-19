@@ -1,14 +1,14 @@
-import { BaseElementData, DiamondElementData } from '../types';
-import BaseElement, { RenderConfig } from './Base';
+import { IBaseElementData, IDiamondElementData, IRenderConfig } from '../types';
+import BaseElement from './Base';
 
 export default class DiamondElement extends BaseElement {
-  constructor(data: BaseElementData) {
+  constructor(data: IBaseElementData) {
     super(data);
   }
 
-  render(config: RenderConfig) {
+  render(config: IRenderConfig) {
     const { ctx, rc } = config;
-    const { x, y, width, height, strokeColor, strokeWidth, fillStyle, roughness, seed } = this.getData() as DiamondElementData;
+    const { x, y, width, height, strokeColor, strokeWidth, fillStyle, roughness, seed } = this.getData() as IDiamondElementData;
 
     ctx.save();
 

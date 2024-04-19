@@ -1,10 +1,10 @@
-import { BaseElementData, IBaseElement, RenderConfig } from '../types';
+import { IBaseElement, IBaseElementData, IRenderConfig } from '../types';
 import { DataManager } from '../utils/DataManager';
 
 export default abstract class BaseElement implements IBaseElement {
-  protected _dataManager: DataManager<BaseElementData>;
+  protected _dataManager: DataManager<IBaseElementData>;
 
-  constructor(data: BaseElementData) {
+  constructor(data: IBaseElementData) {
     this._dataManager = new DataManager(data);
   }
 
@@ -12,9 +12,9 @@ export default abstract class BaseElement implements IBaseElement {
     return this._dataManager.getData();
   }
 
-  setData(data: Partial<BaseElementData>) {
+  setData(data: Partial<IBaseElementData>) {
     this._dataManager.setData(data);
   }
 
-  abstract render(renderConfig: RenderConfig): void;
+  abstract render(renderConfig: IRenderConfig): void;
 }

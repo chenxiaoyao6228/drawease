@@ -1,3 +1,3 @@
 export { Board } from './Board';
-export type { BaseElementData } from './types';
+export type { IBaseElementData as BaseElementData } from './types';
 export { ToolType } from './types';

@@ -1,5 +1,5 @@
 import { Board } from '../Board';
-import { Tool, ToolType } from '../types';
+import { ITool, ToolType } from '../types';
 import { EventEmitter } from '../utils/EventEmitter';
 import { LineTool } from './PathTool';
 import { SelectTool } from './select';
@@ -8,8 +8,8 @@ import { isTargetCanvasElement } from './utils';
 
 export default class ToolManager {
   private _app: Board;
-  private _activeTool!: Tool;
-  private _tools: Map<ToolType, Tool | ((app: Board) => Tool)> = new Map();
+  private _activeTool!: ITool;
+  private _tools: Map<ToolType, ITool | ((app: Board) => ITool)> = new Map();
   private _eventHandlersToDestroy: (() => void)[] = [];
   eventEmitter: EventEmitter;
 
@@ -69,7 +69,7 @@ export default class ToolManager {
     const DEFAULT_TOOL = ToolType.Select;
 
     // Register directly constructible tools
-    const directConstructibleTools: Tool[] = [new SelectTool(this._app), new LineTool(this._app)];
+    const directConstructibleTools: ITool[] = [new SelectTool(this._app), new LineTool(this._app)];
     directConstructibleTools.forEach((tool) => this._tools.set(tool.type, tool));
 
     // Register factory functions for other tools
@@ -79,7 +79,7 @@ export default class ToolManager {
       this._tools.set(toolInstance.type, toolInstance);
     });
 
-    this._activeTool = this._tools.get(DEFAULT_TOOL) as Tool;
+    this._activeTool = this._tools.get(DEFAULT_TOOL) as ITool;
   }
 
   invokeToolByType(toolType: ToolType) {

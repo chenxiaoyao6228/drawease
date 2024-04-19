@@ -1,14 +1,14 @@
-import { EllipseElementData } from '../types';
-import BaseElement, { RenderConfig } from './Base';
+import { IEllipseElementData, IRenderConfig } from '../types';
+import BaseElement from './Base';
 
 export default class EllipseElement extends BaseElement {
-  constructor(data: EllipseElementData) {
+  constructor(data: IEllipseElementData) {
     super(data);
   }
 
-  render(renderConfig: RenderConfig) {
+  render(renderConfig: IRenderConfig) {
     const { rc, ctx } = renderConfig;
-    const { width, height, x, y, fillStyle, strokeColor, strokeWidth, roughness = 1, strokeStyle, seed } = this.getData() as EllipseElementData;
+    const { width, height, x, y, fillStyle, strokeColor, strokeWidth, roughness = 1, strokeStyle, seed } = this.getData() as IEllipseElementData;
 
     const roughOptions = {
       seed,
