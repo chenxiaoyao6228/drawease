@@ -68,11 +68,11 @@ export default class ToolManager {
   private _registerTools() {
     const DEFAULT_TOOL = ToolType.Select;
 
-    // Register directly constructible tools
+    // 注册类
     const directConstructibleTools: ITool[] = [new SelectTool(this._app), new LineTool(this._app)];
     directConstructibleTools.forEach((tool) => this._tools.set(tool.type, tool));
 
-    // Register factory functions for other tools
+    // 注册工厂
     const toolFactories = [RectTool, DiamondTool, EllipseTool];
     toolFactories.forEach((factory) => {
       const toolInstance = factory(this._app);

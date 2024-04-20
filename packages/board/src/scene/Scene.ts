@@ -2,7 +2,8 @@ import { RoughCanvas } from 'roughjs/bin/canvas';
 import rough from 'roughjs/bin/rough';
 
 import { Board } from '../Board';
-import { createElement } from '../elements/util';
+import { SELECTION_BORDRE_OFFSET } from '../elements/constant';
+import { createElement, getMultipleElementsBounds } from '../elements/util';
 import { IBaseElement, IBaseElementData, IOptions, ISceneData } from '../types';
 import { DataManager } from '../utils/DataManager';
 
@@ -116,15 +117,29 @@ export class Scene {
     });
   }
 
-  // TODO: selectionBorder要渲染到哪一层画布上？
-
   renderAll() {
     cancelAnimationFrame(this._animationFrameId!);
     this._animationFrameId = requestAnimationFrame(() => {
       const { width, height } = this._dataManager.getValues(['width', 'height']);
       this._staticCtx.clearRect(0, 0, width!, height!);
       this.renderStaticElements(this._staticCtx, this._elements);
+      this.renderSelectionBorder();
     });
+  }
+
+  renderSelectionBorder() {
+    // FIXME:
+    this.clearInteractiveCanvas();
+    const elements = this._app.selectedElementsManager.getAll();
+    const bound = getMultipleElementsBounds(elements);
+    const { width, height, x, y } = bound;
+    const ctx = this._interactiveCtx;
+    ctx.save();
+    ctx.setLineDash([2]);
+    ctx.strokeStyle = 'blue';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x - SELECTION_BORDRE_OFFSET, y - SELECTION_BORDRE_OFFSET, width + SELECTION_BORDRE_OFFSET * 2, height + SELECTION_BORDRE_OFFSET * 2);
+    ctx.restore();
   }
 
   // 数据处理

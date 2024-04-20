@@ -68,6 +68,14 @@ export interface IPoint {
   y: number;
 }
 
+export interface IBound {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  angle?: number;
+}
+
 export interface IRenderConfig {
   rc: RoughCanvas;
   canvas: HTMLCanvasElement;
@@ -81,4 +89,5 @@ export interface IBaseElement {
   render: (renderConfig: IRenderConfig) => void;
   hitTest: (e: PointerEvent) => boolean;
   move(x: number, y: number): void;
+  getBounds(): IBound;
 }

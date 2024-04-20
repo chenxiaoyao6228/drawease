@@ -1,4 +1,4 @@
-import { ILineElementData, IRenderConfig } from '../types';
+import { IBound, ILineElementData, IRenderConfig } from '../types';
 import BaseElement from './Base';
 
 export default class LineElement extends BaseElement {
@@ -25,8 +25,5 @@ export default class LineElement extends BaseElement {
     ctx.restore();
   }
 
-  getOBB(): { x: number; y: number; width: number; height: number; angle: number } {
-    // Calculate OBB for LineElement
-    // You need to implement this based on the specific shape and properties of LineElement
-  }
+  getBounds(): IBound {}
 }

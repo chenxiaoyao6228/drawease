@@ -31,6 +31,16 @@ export class SelectedElementsManager {
     this._elements = [];
   }
 
+  addMultipleElements(elements: IBaseElement[]) {
+    for (const element of elements) {
+      this.add(element);
+    }
+  }
+
+  getAll() {
+    return this._elements;
+  }
+
   getSelectedElements() {
     return this._elements;
   }

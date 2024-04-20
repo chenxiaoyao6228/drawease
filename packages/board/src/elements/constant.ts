@@ -8,3 +8,5 @@ export const DEFAULT_ELEMENT_DATA = {
   opacity: 100,
   locked: false
 };
+
+export const SELECTION_BORDRE_OFFSET = 4;

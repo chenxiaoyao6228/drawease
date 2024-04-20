@@ -1,4 +1,4 @@
-import { IBaseElementData, IDiamondElementData, IRenderConfig } from '../types';
+import { IBaseElementData, IBound, IDiamondElementData, IRenderConfig } from '../types';
 import BaseElement from './Base';
 
 export default class DiamondElement extends BaseElement {
@@ -31,5 +31,5 @@ export default class DiamondElement extends BaseElement {
 
     ctx.restore();
   }
-  getOBB(): { x: number; y: number; width: number; height: number; angle: number } {}
+  getBounds(): IBound {}
 }

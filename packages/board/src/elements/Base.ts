@@ -1,4 +1,4 @@
-import { IBaseElement, IBaseElementData, IRenderConfig, ISelectableElement } from '../types';
+import { IBaseElement, IBaseElementData, IBound, IRenderConfig } from '../types';
 import { DataManager } from '../utils/DataManager';
 
 export default abstract class BaseElement implements IBaseElement {
@@ -27,19 +27,16 @@ export default abstract class BaseElement implements IBaseElement {
   }
 
   move(dx: number, dy: number) {
-    const { x, y } = this.getValues(['x', 'y']);
-    console.log('1: x, y', x, y);
+    const { x, y } = this.getData();
     this.setData({
-      x: x! + dx,
-      y: y! + dy
+      x: x + dx,
+      y: y + dy
     });
   }
 
-  abstract getOBB(): { x: number; y: number; width: number; height: number; angle: number };
-
   hitTest(e: PointerEvent): boolean {
     const { offsetX, offsetY } = e;
-    const { x, y, width, height, angle } = this.getOBB();
+    const { x, y, width, height, angle = 0 } = this.getBounds();
 
     // Convert pointer event coordinates to local coordinates of the element
     const localX = Math.cos(-angle) * (offsetX - x) - Math.sin(-angle) * (offsetY - y);
@@ -49,5 +46,6 @@ export default abstract class BaseElement implements IBaseElement {
     return localX >= 0 && localX <= width && localY >= 0 && localY <= height;
   }
 
+  abstract getBounds(): IBound;
   abstract render(renderConfig: IRenderConfig): void;
 }

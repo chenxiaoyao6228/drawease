@@ -1,4 +1,4 @@
-import { IEllipseElementData, IRenderConfig } from '../types';
+import { IBound, IEllipseElementData, IRenderConfig } from '../types';
 import BaseElement from './Base';
 
 export default class EllipseElement extends BaseElement {
@@ -23,8 +23,8 @@ export default class EllipseElement extends BaseElement {
     ctx.restore();
   }
 
-  getOBB(): { x: number; y: number; width: number; height: number; angle: number } {
+  getBounds(): IBound {
     const { x, y, width, height } = this.getData() as IEllipseElementData;
-    return { x, y, width, height, angle: 0 }; // For ellipses, the angle is always 0
+    return { x, y, width, height };
   }
 }

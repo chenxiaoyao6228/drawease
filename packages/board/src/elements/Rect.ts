@@ -1,5 +1,6 @@
-import { IRectElementData, IRenderConfig } from '../types';
+import { IBound, IRectElementData, IRenderConfig } from '../types';
 import BaseElement from './Base';
+import { SELECTION_BORDRE_OFFSET } from './constant';
 
 export default class RectElement extends BaseElement {
   constructor(data: IRectElementData) {
@@ -21,18 +22,22 @@ export default class RectElement extends BaseElement {
 
     ctx.save();
     rc.rectangle(x, y, width, height, roughOptions);
-
-    if (this.isSelected) {
-      ctx.strokeStyle = 'blue';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(x - 4, y - 4, width + 8, height + 8);
-    }
-
+    this._renderSelectionBorder(renderConfig);
     ctx.restore();
   }
 
-  getOBB(): { x: number; y: number; width: number; height: number; angle: number } {
+  _renderSelectionBorder(renderConfig: IRenderConfig) {
+    const { ctx } = renderConfig;
     const { x, y, width, height } = this.getData() as IRectElementData;
-    return { x, y, width, height, angle: 0 };
+    if (this.isSelected) {
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x - SELECTION_BORDRE_OFFSET, y - SELECTION_BORDRE_OFFSET, width + SELECTION_BORDRE_OFFSET * 2, height + SELECTION_BORDRE_OFFSET * 2);
+    }
+  }
+
+  getBounds(): IBound {
+    const { x, y, width, height } = this.getData() as IRectElementData;
+    return { x, y, width, height };
   }
 }

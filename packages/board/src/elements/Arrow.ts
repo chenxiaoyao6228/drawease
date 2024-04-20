@@ -1,4 +1,4 @@
-import { IArrowElementData, IRenderConfig } from '../types';
+import { IArrowElementData, IBound, IRenderConfig } from '../types';
 import BaseElement from './Base';
 
 export default class ArrowElement extends BaseElement {
@@ -34,8 +34,5 @@ export default class ArrowElement extends BaseElement {
     rc.line(endX, endY, leftEndX, leftEndY, { stroke: strokeColor, strokeWidth, roughness, seed });
     rc.line(endX, endY, rightEndX, rightEndY, { stroke: strokeColor, strokeWidth, roughness, seed });
   }
-  getOBB(): { x: number; y: number; width: number; height: number; angle: number } {
-    // Calculate OBB for ArrowElement
-    // You need to implement this based on the specific shape and properties of ArrowElement
-  }
+  getBounds(): IBound {}
 }
