@@ -1,0 +1,7 @@
+# 指定所有文件使用LF（Unix/Linux风格）换行符
+* text=auto eol=lf
+
+# 指定所有图片文件为二进制文件，不进行换行符转换
+*.png binary
+*.jpg binary
+*.gif binary
