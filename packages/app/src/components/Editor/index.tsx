@@ -25,7 +25,7 @@ const Editor = (props: IEditorProps) => {
     });
 
     if (initialData) {
-      board.loadDatas(initialData);
+      board.scene.loadDatas(initialData);
     }
 
     setEditor(board);

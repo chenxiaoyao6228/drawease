@@ -119,6 +119,7 @@ export class SelectTool implements ITool {
     }
 
     if (this._currentStrategy) {
+      this._currentStrategy.active();
       this._currentStrategy.pointerDown(event);
     }
 

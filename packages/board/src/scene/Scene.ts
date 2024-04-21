@@ -18,7 +18,6 @@ export class Scene {
   private _staticCanvas!: HTMLCanvasElement;
   private _staticCtx!: CanvasRenderingContext2D;
   private _staticRC!: RoughCanvas;
-  private _animationFrameId: number | null = null;
   private _dataManager: DataManager<ISceneData>;
 
   constructor(app: Board, options: IOptions) {
