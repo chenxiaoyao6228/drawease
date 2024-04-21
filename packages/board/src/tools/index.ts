@@ -7,16 +7,19 @@ import { SelectTool } from './select';
 import { DiamondTool, EllipseTool, RectTool } from './ShapeTool';
 import { isTargetCanvasElement } from './utils';
 
+type IToolManagerEvent = {
+  toolChange: ToolType;
+};
+
 export default class ToolManager {
   private _app: Board;
   private _activeTool!: ITool;
   private _tools: Map<ToolType, ITool | ((app: Board) => ITool)> = new Map();
   private _eventHandlersToDestroy: (() => void)[] = [];
-  eventEmitter: EventEmitter;
+  eventEmitter = new EventEmitter<IToolManagerEvent>();
 
   constructor(app: Board) {
     this._app = app;
-    this.eventEmitter = new EventEmitter();
     this._registerTools();
     this._bindEvents();
   }
@@ -102,9 +105,7 @@ export default class ToolManager {
 
     this._activeTool.active();
 
-    this.eventEmitter.emit('toolChange', {
-      currentToolType: this._activeTool.type
-    });
+    this.eventEmitter.emit('toolChange', this._activeTool.type);
   }
 
   destroy() {

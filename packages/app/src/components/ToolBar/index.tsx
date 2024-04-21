@@ -53,8 +53,8 @@ const ToolBar = () => {
     if (!editor) {
       return;
     }
-    const handler = (data: any) => {
-      setActiveType(data.currentToolType);
+    const handler = (toolType: ToolType) => {
+      setActiveType(toolType);
     };
     editor.tool.eventEmitter.on('toolChange', handler);
 

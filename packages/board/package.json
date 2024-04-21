@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@drawease/utils": "workspace:*",
+    "mitt": "^3.0.1",
     "roughjs": "^4.6.6"
   },
   "devDependencies": {

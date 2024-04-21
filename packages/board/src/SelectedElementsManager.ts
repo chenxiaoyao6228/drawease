@@ -1,11 +1,14 @@
-import { EventEmitter } from '@drawease/board/utils';
-
 import { Board } from '.';
 import { IBaseElement } from './types';
+import { EventEmitter } from './utils';
+
+type ISelectedElementsManagerEvent = {
+  selectionChange: IBaseElement[];
+};
 
 // 负责元素的选中逻辑，并通过事件通知外部UI的选中状态
 export class SelectedElementsManager {
-  private _emitter: EventEmitter = new EventEmitter();
+  eventEmitter = new EventEmitter<ISelectedElementsManagerEvent>();
   private _elements: IBaseElement[] = [];
   private _app: Board;
   constructor(app: Board) {
@@ -15,6 +18,7 @@ export class SelectedElementsManager {
     if (this._elements.indexOf(element) === -1) {
       this._elements.push(element);
       element.setSelected(true);
+      this.eventEmitter.emit('selectionChange', this._elements);
     }
   }
 
@@ -23,12 +27,14 @@ export class SelectedElementsManager {
     if (index !== -1) {
       this._elements.splice(index, 1);
       element.setSelected(false);
+      this.eventEmitter.emit('selectionChange', this._elements);
     }
   }
 
   clear() {
     this._elements.forEach((element) => element.setSelected(false));
     this._elements = [];
+    this.eventEmitter.emit('selectionChange', this._elements);
   }
 
   addMultipleElements(elements: IBaseElement[]) {
@@ -60,9 +66,5 @@ export class SelectedElementsManager {
   selectSingleElement(element: IBaseElement) {
     this.clear();
     this.add(element);
-  }
-  // 显式声明事件： onElementSelected, onElementDeslected
-  onSelectionChanged(callback: (data: { elements: IBaseElement[] }) => void) {
-    // TODO:
   }
 }
