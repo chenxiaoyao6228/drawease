@@ -16,6 +16,8 @@ export class ShapeTool implements ITool {
     this.type = type;
     this.elementType = elementType;
   }
+  active() {}
+  deactive() {}
 
   pointerDown(event: PointerEvent) {
     console.log(`${this.type} 工具：鼠标按下事件`);

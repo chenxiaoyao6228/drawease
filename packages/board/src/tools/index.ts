@@ -83,6 +83,10 @@ export default class ToolManager {
   }
 
   invokeToolByType(toolType: ToolType) {
+    if (this._activeTool) {
+      this._activeTool.deactive();
+    }
+
     const activeToolOrFactory = this._tools.get(toolType);
     if (!activeToolOrFactory) {
       throw new Error(`${toolType} is not registered, please check`);
@@ -94,6 +98,9 @@ export default class ToolManager {
       this._activeTool = activeToolOrFactory;
     }
     console.log('[board]: 当前激活tool', this._activeTool.type);
+
+    this._activeTool.active();
+
     this.eventEmitter.emit('toolChange', {
       currentToolType: this._activeTool.type
     });

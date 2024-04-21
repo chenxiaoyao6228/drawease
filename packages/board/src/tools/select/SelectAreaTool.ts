@@ -11,6 +11,8 @@ export class SelectAreaTool implements ITool {
   constructor(app: Board) {
     this._app = app;
   }
+  active() {}
+  deactive() {}
   pointerDown(event: PointerEvent) {
     this.areaSelectionStartPoint = {
       x: event.offsetX,

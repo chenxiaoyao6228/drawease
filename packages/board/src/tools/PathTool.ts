@@ -14,6 +14,8 @@ export class LineTool implements ITool {
     this.type = ToolType.Line;
   }
 
+  active() {}
+  deactive() {}
   pointerDown(event: PointerEvent) {
     console.log(`${this.type} tool: Pointer down event`);
     this.startPoint = { x: event.offsetX, y: event.offsetY };

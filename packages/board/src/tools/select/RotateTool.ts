@@ -8,6 +8,8 @@ export class RotateTool implements ITool {
   constructor(app: Board) {
     this._app = app;
   }
+  active() {}
+  deactive() {}
   pointerDown(event: PointerEvent) {
     console.log('RotateTool：鼠标按下事件');
   }

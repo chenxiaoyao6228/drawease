@@ -1,4 +1,4 @@
-import { createElement, getMultipleElementsBounds, isPointInBound } from '@drawease/board/elements/util';
+import { getMultipleElementsBounds, isPointInBound } from '@drawease/board/elements/util';
 
 import { IBaseElement, IPoint, ITool, ToolType } from '../../types';
 import { Board } from './../../Board';
@@ -36,6 +36,20 @@ export class SelectTool implements ITool {
     this._strategies.set(ToolType.Rotate, new RotateTool(this._app));
     this._strategies.set(ToolType.SelectArea, new SelectAreaTool(this._app));
   }
+  active() {
+    if (this._currentStrategy) {
+      this._currentStrategy.active();
+    }
+  }
+  deactive() {
+    if (this._currentStrategy) {
+      this._currentStrategy.deactive();
+      this._currentStrategy = null;
+    }
+    this._app.selectedElementsManager.clear();
+    this._app.scene.clearInteractiveCanvas();
+    this._app.scene.renderAll();
+  }
 
   pointerDown(event: PointerEvent) {
     console.log('选择工具：鼠标按下事件');
@@ -63,14 +77,21 @@ export class SelectTool implements ITool {
         if (selectedElements.length) {
           if (selectedElements.length > 1) {
             // 当前选中了多个元素， 用户可能选中的中间的区域
+            if (isShiftPressed) {
+              this._app.selectedElementsManager.add(elementHit);
+            }
             this._currentStrategy = this._strategies.get(ToolType.Move)!;
           } else {
             const onlySelectedElement = selectedElements[0];
             if (onlySelectedElement.getData().id === elementHit.getData().id) {
               // do nothing
             } else {
-              this._app.selectedElementsManager.deselectAllElements();
-              this._app.selectedElementsManager.selectSingleElement(elementHit);
+              if (isShiftPressed) {
+                this._app.selectedElementsManager.add(elementHit);
+              } else {
+                this._app.selectedElementsManager.deselectAllElements();
+                this._app.selectedElementsManager.selectSingleElement(elementHit);
+              }
             }
           }
         } else {

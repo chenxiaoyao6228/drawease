@@ -10,6 +10,8 @@ export interface IOptions {
 // ----- Tool相关 -------
 export interface ITool {
   type: ToolType; //工具类型
+  active: () => void;
+  deactive: () => void;
   pointerDown(event: PointerEvent): void;
   pointerMove(event: PointerEvent): void;
   pointerUp(event: PointerEvent): void;
