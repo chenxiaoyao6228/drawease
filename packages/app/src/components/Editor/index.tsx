@@ -4,12 +4,12 @@ import React, { useEffect, useRef } from 'react';
 import { useEditor } from './editorContext';
 
 // 給外部暴露的接口
-interface EditorProps {
+interface IEditorProps {
   initialData?: BaseElementData[];
   onBoardInited?: (board: Board) => void;
 }
 
-const Editor = (props: EditorProps) => {
+const Editor = (props: IEditorProps) => {
   const { onBoardInited, initialData } = props;
   const containerRef = useRef<HTMLDivElement | null>();
   const BoardRef = useRef<Board | null>(null);

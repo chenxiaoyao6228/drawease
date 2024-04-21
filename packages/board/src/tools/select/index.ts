@@ -1,6 +1,6 @@
 import { getMultipleElementsBounds, isPointInBound } from '@drawease/board/elements/util';
 
-import { IBaseElement, IPoint, ITool, ToolType } from '../../types';
+import { IBaseElement, ITool, ToolType } from '../../types';
 import { Board } from './../../Board';
 import { MoveTool } from './MoveTool';
 import { ResizeTool } from './ResizeTool';

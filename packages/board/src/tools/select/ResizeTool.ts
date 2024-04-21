@@ -1,4 +1,4 @@
-import { IBaseElement, ITool, ToolType } from '@drawease/board/types';
+import { ITool, ToolType } from '@drawease/board/types';
 
 import { Board } from '../..';
 

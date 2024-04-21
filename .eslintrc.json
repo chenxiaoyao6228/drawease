@@ -1,7 +1,7 @@
 {
   "root": true,
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:react-hooks/recommended", "prettier"],
-  "plugins": ["@typescript-eslint", "react", "react-hooks", "simple-import-sort"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "simple-import-sort", "unused-imports"],
   "parser": "@typescript-eslint/parser",
   "rules": {
     "simple-import-sort/imports": "error",
@@ -9,6 +9,7 @@
     "no-duplicate-imports": "error",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-explicit-any": 0,
+    "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/naming-convention": [
       "error",
       {

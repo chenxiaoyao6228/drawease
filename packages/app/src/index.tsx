@@ -8,12 +8,12 @@ import { EditorProvider } from './components/Editor/editorContext';
 import ToolBar from './components/ToolBar';
 
 // 給外部暴露的接口
-interface DrawEaseAppProps {
+interface IDrawEaseAppProps {
   initialData?: BaseElementData[];
   onBoardInited?: (board: Board) => void;
 }
 
-const DrawEaseApp = (props: DrawEaseAppProps) => {
+const DrawEaseApp = (props: IDrawEaseAppProps) => {
   return (
     <EditorProvider>
       {/* Board撑满，其他layer层绝对定位 */}
