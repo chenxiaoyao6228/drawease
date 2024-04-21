@@ -74,32 +74,28 @@ export class SelectTool implements ITool {
       if (elementHit) {
         // 判断是否在多个矩形的选择区域内
         const selectedElements = this._app.selectedElementsManager.getAll();
-        if (selectedElements.length) {
+        if (selectedElements.length > 0) {
+          // 当前选中了多个元素， 用户可能选中的中间的区域
           if (selectedElements.length > 1) {
-            // 当前选中了多个元素， 用户可能选中的中间的区域
             if (isShiftPressed) {
               this._app.selectedElementsManager.add(elementHit);
             }
             this._currentStrategy = this._strategies.get(ToolType.Move)!;
           } else {
-            const onlySelectedElement = selectedElements[0];
-            if (onlySelectedElement.getData().id === elementHit.getData().id) {
-              // do nothing
+            // 原先用户已经选中了一个
+            if (isShiftPressed) {
+              this._app.selectedElementsManager.add(elementHit);
             } else {
-              if (isShiftPressed) {
-                this._app.selectedElementsManager.add(elementHit);
-              } else {
-                this._app.selectedElementsManager.deselectAllElements();
-                this._app.selectedElementsManager.selectSingleElement(elementHit);
-              }
+              this._app.selectedElementsManager.deselectAllElements();
+              this._app.selectedElementsManager.selectSingleElement(elementHit);
             }
+
+            this._currentStrategy = this._strategies.get(ToolType.Move)!;
           }
         } else {
-          if (isShiftPressed) {
-            this._app.selectedElementsManager.toggleElementSelection(elementHit);
-          } else {
-            this._app.selectedElementsManager.selectSingleElement(elementHit);
-          }
+          // 选中第一个元素
+          this._app.selectedElementsManager.selectSingleElement(elementHit);
+          this._currentStrategy = this._strategies.get(ToolType.Move)!;
         }
       } else {
         // 判断是否在多个矩形的选择区域内
@@ -135,6 +131,8 @@ export class SelectTool implements ITool {
     if (this._currentStrategy) {
       this._currentStrategy.pointerMove(event);
       return;
+    } else {
+      throw new Error(`No tool strategy is selected, please check your code`);
     }
   }
 

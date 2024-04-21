@@ -53,6 +53,10 @@ export function getDefaultElementData() {
   } as Partial<IBaseElementData>;
 }
 
+export function isSameElement(el1: IBaseElement, el2: IBaseElement) {
+  return el1.getData().id === el2.getData().id;
+}
+
 export function getMultipleElementsBounds(elements: IBaseElement[]) {
   if (elements.length === 0) {
     return { x: 0, y: 0, width: 0, height: 0 };
