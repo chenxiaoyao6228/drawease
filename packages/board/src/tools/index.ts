@@ -1,5 +1,6 @@
 import { Board } from '../Board';
 import { ITool, ToolType } from '../types';
+import { rafThrottle } from '../utils';
 import { EventEmitter } from '../utils/EventEmitter';
 import { LineTool } from './PathTool';
 import { SelectTool } from './select';
@@ -30,12 +31,12 @@ export default class ToolManager {
       }
     };
 
-    const pointerMoveHandler = (event: PointerEvent) => {
+    const pointerMoveHandler = rafThrottle((event: PointerEvent) => {
       if (!isPointerDown) {
         return;
       }
       this._activeTool.pointerMove(event);
-    };
+    });
 
     const pointerUpHandler = (event: PointerEvent) => {
       if (isPointerDown) {

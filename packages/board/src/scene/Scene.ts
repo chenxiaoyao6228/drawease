@@ -5,6 +5,7 @@ import { Board } from '../Board';
 import { SELECTION_BORDRE_OFFSET } from '../elements/constant';
 import { createElement, getMultipleElementsBounds } from '../elements/util';
 import { IBaseElement, IBaseElementData, IOptions, ISceneData } from '../types';
+import { rafThrottle } from '../utils';
 import { DataManager } from '../utils/DataManager';
 
 export class Scene {
@@ -95,6 +96,7 @@ export class Scene {
   }
 
   renderInteractiveElement(elements: IBaseElement) {
+    console.log('[board]: renderInteractiveElement----->');
     this.clearInteractiveCanvas();
     const _elements = Array.isArray(elements) ? elements : [elements];
     _elements.forEach((element) => {
@@ -106,6 +108,14 @@ export class Scene {
     });
   }
 
+  renderAll = rafThrottle(() => {
+    const { width, height } = this._dataManager.getValues(['width', 'height']);
+    this._staticCtx.clearRect(0, 0, width!, height!);
+    this.renderStaticElements(this._staticCtx, this._elements);
+    this.renderSelectionBorder();
+    this.renderTransformHandles();
+  });
+
   private renderStaticElements(ctx: CanvasRenderingContext2D, elements: IBaseElement[]) {
     console.log('[board]: renderStaticElements----->');
     elements.forEach((element) => {
@@ -114,17 +124,6 @@ export class Scene {
         canvas: this._staticCanvas,
         ctx
       });
-    });
-  }
-
-  renderAll() {
-    cancelAnimationFrame(this._animationFrameId!);
-    this._animationFrameId = requestAnimationFrame(() => {
-      const { width, height } = this._dataManager.getValues(['width', 'height']);
-      this._staticCtx.clearRect(0, 0, width!, height!);
-      this.renderStaticElements(this._staticCtx, this._elements);
-      this.renderSelectionBorder();
-      this.renderTransformHandles();
     });
   }
 
