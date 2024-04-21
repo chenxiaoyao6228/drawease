@@ -17,6 +17,10 @@ export interface ITool {
 
 export enum ToolType {
   Select = 'select',
+  Move = 'select_move',
+  Rotate = 'select_rotate',
+  Resize = 'select_resize',
+  SelectArea = 'select_area',
   Rect = 'Rect',
   Diamond = 'Diamond',
   Ellipse = 'Ellipse',

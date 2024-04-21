@@ -124,22 +124,33 @@ export class Scene {
       this._staticCtx.clearRect(0, 0, width!, height!);
       this.renderStaticElements(this._staticCtx, this._elements);
       this.renderSelectionBorder();
+      this.renderTransformHandles();
     });
   }
 
   renderSelectionBorder() {
-    // FIXME:
     this.clearInteractiveCanvas();
     const elements = this._app.selectedElementsManager.getAll();
-    const bound = getMultipleElementsBounds(elements);
-    const { width, height, x, y } = bound;
-    const ctx = this._interactiveCtx;
-    ctx.save();
-    ctx.setLineDash([2]);
-    ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(x - SELECTION_BORDRE_OFFSET, y - SELECTION_BORDRE_OFFSET, width + SELECTION_BORDRE_OFFSET * 2, height + SELECTION_BORDRE_OFFSET * 2);
-    ctx.restore();
+    if (elements.length) {
+      const bound = getMultipleElementsBounds(elements);
+      const { width, height, x, y } = bound;
+      const ctx = this._interactiveCtx;
+      ctx.save();
+      ctx.setLineDash([2]);
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x - SELECTION_BORDRE_OFFSET, y - SELECTION_BORDRE_OFFSET, width + SELECTION_BORDRE_OFFSET * 2, height + SELECTION_BORDRE_OFFSET * 2);
+      ctx.restore();
+    }
+  }
+
+  renderTransformHandles() {
+    // 根据选中的元素添加
+    this._app.controllHandleManager.render({
+      rc: this._staticRC,
+      canvas: this._interactiveCanvas,
+      ctx: this._interactiveCtx
+    });
   }
 
   // 数据处理
