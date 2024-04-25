@@ -1,12 +1,5 @@
-export const DEFAULT_ELEMENT_DATA = {
-  strokeColor: 'black',
-  backgroundColor: 'transparent',
-  fillStyle: 'hachure',
-  strokeWidth: 1,
-  strokeStyle: 'solid',
-  roughness: 1,
-  opacity: 100,
-  locked: false
-};
+import { IMatrixArr } from '../types';
+
+export const DEFUALT_TRANSFORM_DATA: IMatrixArr = [1, 0, 0, 1, 0, 0];
 
 export const SELECTION_BORDRE_OFFSET = 4;

@@ -1,6 +1,11 @@
 import { RoughCanvas } from 'roughjs/bin/canvas';
 
+import { Matrix } from '../utils/math/Matrix';
+
 // ----- elementData相关 -------
+
+export type IMatrixArr = [number, number, number, number, number, number];
+
 export type FillStyle = 'hachure' | 'cross-hatch' | 'solid' | 'zigzag';
 export type StrokeStyle = 'solid' | 'dashed' | 'dotted';
 export interface IBaseElementData {
@@ -12,6 +17,7 @@ export interface IBaseElementData {
   width: number;
   height: number;
   angle: number;
+  transform: IMatrixArr;
   // 样式
   strokeColor: string;
   backgroundColor: string;
@@ -19,7 +25,6 @@ export interface IBaseElementData {
   strokeWidth: number;
   strokeStyle: StrokeStyle;
   roughness: number;
-  // roundness: null | { type: RoundnessType; value?: number }; // 暂不支持
   opacity: number;
   // 版本控制
   isDeleted: boolean;
@@ -68,12 +73,18 @@ export interface IPoint {
   y: number;
 }
 
+export interface ISize {
+  width: number;
+  height: number;
+}
+
 export interface IBound {
   x: number;
   y: number;
   width: number;
   height: number;
   angle?: number;
+  transform?: IMatrixArr;
 }
 
 export interface IRenderConfig {
@@ -87,7 +98,9 @@ export interface IBaseElement {
   getData: () => IBaseElementData;
   setData: (data: IBaseElementData) => void;
   render: (renderConfig: IRenderConfig) => void;
+  renderSelectionBorder: (ctx: CanvasRenderingContext2D) => void;
   hitTest: (e: PointerEvent) => boolean;
   move(x: number, y: number): void;
+  updateTransform(matrix: Matrix): void;
   getBounds(): IBound;
 }

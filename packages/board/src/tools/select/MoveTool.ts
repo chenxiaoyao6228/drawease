@@ -25,7 +25,9 @@ export class MoveTool implements ITool {
       this._initialPointerPosition = { x: event.offsetX, y: event.offsetY };
     }
   }
-  pointerUp(event: PointerEvent) {}
+  pointerUp(event: PointerEvent) {
+    this._initialPointerPosition = null;
+  }
 
   moveSelectedElements(elements: IBaseElement[], dx: number, dy: number) {
     elements.forEach((element) => {

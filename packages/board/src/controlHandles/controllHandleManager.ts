@@ -1,6 +1,7 @@
 import { Board } from '..';
-import { getMultipleElementsBounds, isPointInBound } from '../elements/util';
+import { isPointInBound } from '../elements/util';
 import { IPoint, IRenderConfig } from '../types';
+import { getTransformedSize } from '../utils/math/Matrix';
 import { ControlHandleObj, ControlHandles, ControlHandleType } from './../types/controlHandle';
 
 const TRANSFORM_HANDLE_SIZE = 8;
@@ -14,12 +15,15 @@ export class ControllHandleManager {
   render(renderConfig: IRenderConfig) {
     const { rc, ctx } = renderConfig;
     const selectedElements = this._app.selectedElementsManager.getAll();
-    if (selectedElements.length) {
+
+    if (selectedElements.length === 1) {
       const handles = this.generateControlHandles();
 
       ctx.save();
       ctx.strokeStyle = 'blue';
+
       ctx.lineWidth = 1;
+
       Object.keys(handles).forEach((key) => {
         const handle = handles[key as ControlHandleType];
         if (!handle) {
@@ -30,6 +34,8 @@ export class ControllHandleManager {
         ctx.stroke();
       });
       ctx.restore();
+    } else {
+      // TODO
     }
   }
 
@@ -51,18 +57,32 @@ export class ControllHandleManager {
 
   generateControlHandles(): ControlHandles {
     const selectedElements = this._app.selectedElementsManager.getAll();
-    const bound = getMultipleElementsBounds(selectedElements);
-    const { x, y, width, height } = bound;
-    const halfWidth = width / 2;
-    const halfHeight = height / 2;
+    if (!selectedElements.length) {
+      return {};
+    }
+    // FIXME:
+    const bound = selectedElements[0].getBounds();
+    const { x, y, width, height, transform } = bound;
+
+    const { width: newWidth, height: newHeight } = getTransformedSize({ width, height }, transform!);
+    const halfWidth = newWidth / 2;
     const controlHandles = {
+      // 旋转
       rotation: {
         x: x + halfWidth - TRANSFORM_HANDLE_SIZE / 2,
         y: y - TRANSFORM_HANDLE_SIZE - ROTATION_RESIZE_HANDLE_GAP,
         width: TRANSFORM_HANDLE_SIZE,
         height: TRANSFORM_HANDLE_SIZE
       },
-      ne: { x: x + width + TRANSFORM_HANDLE_SIZE / 2, y: y - TRANSFORM_HANDLE_SIZE, width: TRANSFORM_HANDLE_SIZE, height: TRANSFORM_HANDLE_SIZE }
+      // 右上
+      ne: { x: x + newWidth, y: y - TRANSFORM_HANDLE_SIZE, width: TRANSFORM_HANDLE_SIZE, height: TRANSFORM_HANDLE_SIZE },
+      // 右下
+      se: {
+        x: x + newWidth,
+        y: y + newHeight,
+        width: TRANSFORM_HANDLE_SIZE,
+        height: TRANSFORM_HANDLE_SIZE
+      }
     };
 
     return controlHandles;

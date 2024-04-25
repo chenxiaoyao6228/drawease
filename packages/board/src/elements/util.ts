@@ -10,8 +10,10 @@ import {
   IRectElementData
 } from '../types';
 import { randomInteger } from '../utils';
+import { Matrix } from '../utils/math/Matrix';
 import ArrowElement from './Arrow';
 import BaseElement from './Base';
+import { DEFUALT_TRANSFORM_DATA } from './constant';
 import DiamondElement from './Diamond';
 import EllipseElement from './Ellipse';
 import LineElement from './Line';
@@ -49,6 +51,7 @@ export function getDefaultElementData() {
     roughness: 1,
     opacity: 100,
     locked: false,
+    transform: DEFUALT_TRANSFORM_DATA,
     seed: randomInteger()
   } as Partial<IBaseElementData>;
 }
@@ -89,9 +92,15 @@ export function getMultipleElementsBounds(elements: IBaseElement[]) {
 }
 
 export function isPointInBound(point: IPoint, bound: IBound) {
-  const { x, y, width, height } = bound;
+  const { x, y, width, height, transform } = bound;
 
-  return point.x >= x && point.x <= x + width && point.y >= y && point.y <= y + height;
+  let _point = { x, y };
+  if (transform) {
+    const matrix = new Matrix(...transform);
+    _point = matrix.applyInverse(_point);
+  }
+
+  return point.x >= _point.x && point.x <= _point.x + width && point.y >= _point.y && point.y <= _point.y + height;
 }
 
 function rotatePoint(point: IPoint, center: IPoint, angle: number) {

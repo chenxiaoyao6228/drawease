@@ -111,6 +111,7 @@ export class Scene {
     const { width, height } = this._dataManager.getValues(['width', 'height']);
     this._staticCtx.clearRect(0, 0, width!, height!);
     this.renderStaticElements(this._staticCtx, this._elements);
+    this.clearInteractiveCanvas();
     this.renderSelectionBorder();
     this.renderTransformHandles();
   });
@@ -127,9 +128,8 @@ export class Scene {
   }
 
   renderSelectionBorder() {
-    this.clearInteractiveCanvas();
     const elements = this._app.selectedElementsManager.getAll();
-    if (elements.length) {
+    if (elements.length > 1) {
       const bound = getMultipleElementsBounds(elements);
       const { width, height, x, y } = bound;
       const ctx = this._interactiveCtx;
@@ -138,8 +138,12 @@ export class Scene {
       ctx.strokeStyle = 'blue';
       ctx.lineWidth = 1;
       ctx.strokeRect(x - SELECTION_BORDRE_OFFSET, y - SELECTION_BORDRE_OFFSET, width + SELECTION_BORDRE_OFFSET * 2, height + SELECTION_BORDRE_OFFSET * 2);
+
       ctx.restore();
     }
+    elements.forEach((element) => {
+      element.renderSelectionBorder(this._interactiveCtx);
+    });
   }
 
   renderTransformHandles() {
