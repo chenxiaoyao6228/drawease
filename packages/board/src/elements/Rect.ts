@@ -1,5 +1,4 @@
 import { IBound, IRectElementData, IRenderConfig } from '../types';
-import { getTransformedSize } from '../utils/math/Matrix';
 import BaseElement from './Base';
 import { SELECTION_BORDRE_OFFSET } from './constant';
 
@@ -10,41 +9,35 @@ export default class RectElement extends BaseElement {
 
   render(renderConfig: IRenderConfig) {
     const { rc, ctx } = renderConfig;
-
-    const { x, y, width, height, fillStyle, strokeColor, strokeWidth, strokeStyle, roughness = 1, seed, transform } = this.getData() as IRectElementData;
-
-    const deOffset = Math.max(transform[0], transform[3]);
+    const { width, height, transform, fillStyle, strokeColor, strokeWidth, strokeStyle, roughness = 1, seed } = this.getData() as IRectElementData;
     const roughOptions = {
       seed,
       stroke: strokeColor,
-      strokeWidth: strokeWidth / deOffset, //线宽保持不变
-      roughness: roughness || 1,
+      strokeWidth,
+      roughness,
       ...(fillStyle && { fillStyle })
     };
 
     ctx.save();
-    // 矩阵变换
-    if (transform) {
-      ctx.transform(...transform);
-    }
-    rc.rectangle(x, y, width, height, roughOptions);
+    ctx.transform(...transform);
+    rc.rectangle(0, 0, width, height, roughOptions);
     ctx.restore();
   }
 
   renderSelectionBorder(ctx: CanvasRenderingContext2D) {
-    const { x, y, width, height, transform } = this.getData() as IRectElementData;
     if (this.isSelected) {
+      const { width, height, transform } = this.getData() as IRectElementData;
       ctx.save();
+      ctx.transform(...transform);
       ctx.strokeStyle = 'blue';
       ctx.lineWidth = 1;
-      const { width: newWidth, height: newHeight } = getTransformedSize({ width, height }, transform!);
-      ctx.strokeRect(x - SELECTION_BORDRE_OFFSET, y - SELECTION_BORDRE_OFFSET, newWidth, newHeight);
+      ctx.strokeRect(-SELECTION_BORDRE_OFFSET, -SELECTION_BORDRE_OFFSET, width + 2 * SELECTION_BORDRE_OFFSET, height + 2 * SELECTION_BORDRE_OFFSET);
       ctx.restore();
     }
   }
 
   getBounds(): IBound {
-    const { x, y, width, height, transform } = this.getData() as IRectElementData;
-    return { x, y, width, height, transform };
+    const { width, height, transform } = this.getData() as IRectElementData;
+    return { width, height, transform };
   }
 }

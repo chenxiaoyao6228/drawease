@@ -1,17 +1,18 @@
 import { Board } from '..';
 import { isPointInBound } from '../elements/util';
 import { IPoint, IRenderConfig } from '../types';
-import { getTransformedSize } from '../utils/math/Matrix';
+import { Matrix } from '../utils/math/Matrix';
 import { ControlHandleObj, ControlHandles, ControlHandleType } from './../types/controlHandle';
 
 const TRANSFORM_HANDLE_SIZE = 8;
-const ROTATION_RESIZE_HANDLE_GAP = 16;
+const ROTATION_RESIZE_HANDLE_GAP = 36;
 
 export class ControllHandleManager {
   _app: Board;
   constructor(app: Board) {
     this._app = app;
   }
+
   render(renderConfig: IRenderConfig) {
     const { rc, ctx } = renderConfig;
     const selectedElements = this._app.selectedElementsManager.getAll();
@@ -21,7 +22,6 @@ export class ControllHandleManager {
 
       ctx.save();
       ctx.strokeStyle = 'blue';
-
       ctx.lineWidth = 1;
 
       Object.keys(handles).forEach((key) => {
@@ -29,10 +29,17 @@ export class ControllHandleManager {
         if (!handle) {
           return;
         }
+        ctx.save();
+        if (handle.transform) {
+          ctx.transform(...handle.transform);
+        }
         ctx.beginPath();
-        ctx.rect(handle.x, handle.y, handle.width, handle.height);
+        ctx.rect(0, 0, handle.width, handle.height);
         ctx.stroke();
+        ctx.closePath();
+        ctx.restore();
       });
+
       ctx.restore();
     } else {
       // TODO
@@ -60,28 +67,42 @@ export class ControllHandleManager {
     if (!selectedElements.length) {
       return {};
     }
-    // FIXME:
-    const bound = selectedElements[0].getBounds();
-    const { x, y, width, height, transform } = bound;
+    const element = selectedElements[0];
+    const { width, height, transform } = element.getBounds();
 
-    const { width: newWidth, height: newHeight } = getTransformedSize({ width, height }, transform!);
-    const halfWidth = newWidth / 2;
-    const controlHandles = {
-      // 旋转
+    // 使用元素的变换矩阵作为基础
+    const baseMatrix = new Matrix(...transform);
+
+    // 计算控制点位置
+    const handleSize = TRANSFORM_HANDLE_SIZE;
+    const controlHandles: ControlHandles = {
       rotation: {
-        x: x + halfWidth - TRANSFORM_HANDLE_SIZE / 2,
-        y: y - TRANSFORM_HANDLE_SIZE - ROTATION_RESIZE_HANDLE_GAP,
-        width: TRANSFORM_HANDLE_SIZE,
-        height: TRANSFORM_HANDLE_SIZE
+        transform: baseMatrix
+          .clone()
+          .translate(width / 2, -ROTATION_RESIZE_HANDLE_GAP)
+          .toArray(),
+        width: handleSize,
+        height: handleSize
       },
-      // 右上
-      ne: { x: x + newWidth, y: y - TRANSFORM_HANDLE_SIZE, width: TRANSFORM_HANDLE_SIZE, height: TRANSFORM_HANDLE_SIZE },
-      // 右下
+      ne: {
+        transform: baseMatrix.clone().translate(width, 0).toArray(),
+        width: handleSize,
+        height: handleSize
+      },
       se: {
-        x: x + newWidth,
-        y: y + newHeight,
-        width: TRANSFORM_HANDLE_SIZE,
-        height: TRANSFORM_HANDLE_SIZE
+        transform: baseMatrix.clone().translate(width, height).toArray(),
+        width: handleSize,
+        height: handleSize
+      },
+      sw: {
+        transform: baseMatrix.clone().translate(0, height).toArray(),
+        width: handleSize,
+        height: handleSize
+      },
+      nw: {
+        transform: baseMatrix.clone().toArray(),
+        width: handleSize,
+        height: handleSize
       }
     };
 

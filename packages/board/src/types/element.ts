@@ -12,11 +12,8 @@ export interface IBaseElementData {
   id: string;
   type: string;
   // 布局相关属性
-  x: number;
-  y: number;
   width: number;
   height: number;
-  angle: number;
   transform: IMatrixArr;
   // 样式
   strokeColor: string;
@@ -79,12 +76,9 @@ export interface ISize {
 }
 
 export interface IBound {
-  x: number;
-  y: number;
   width: number;
   height: number;
-  angle?: number;
-  transform?: IMatrixArr;
+  transform: IMatrixArr;
 }
 
 export interface IRenderConfig {
@@ -100,7 +94,6 @@ export interface IBaseElement {
   render: (renderConfig: IRenderConfig) => void;
   renderSelectionBorder: (ctx: CanvasRenderingContext2D) => void;
   hitTest: (e: PointerEvent) => boolean;
-  move(x: number, y: number): void;
   updateTransform(matrix: Matrix): void;
   getBounds(): IBound;
 }

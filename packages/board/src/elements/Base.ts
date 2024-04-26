@@ -28,17 +28,9 @@ export default abstract class BaseElement implements IBaseElement {
     return this._dataManager.getValues(data);
   }
 
-  move(dx: number, dy: number) {
-    const { x, y } = this.getData();
-    this.setData({
-      x: x + dx,
-      y: y + dy
-    });
-  }
-
   updateTransform(matrix: Matrix) {
     this.setData({
-      transform: matrix.getTransform()
+      transform: matrix.toArray()
     });
   }
 
@@ -47,10 +39,8 @@ export default abstract class BaseElement implements IBaseElement {
       x: e.offsetX,
       y: e.offsetY
     };
-    const { x, y, width, height, transform } = this.getData();
+    const { width, height, transform } = this.getData();
     return isPointInBound(point, {
-      x,
-      y,
       width,
       height,
       transform

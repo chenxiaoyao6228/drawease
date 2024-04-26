@@ -11,10 +11,9 @@ const initialData = [
     locked: false,
     seed: 849472721,
     type: 'rectangle',
-    x: 100,
-    y: 100,
     width: 100,
-    height: 100
+    height: 100,
+    transform: [1, 0, 0, 1, 100, 100]
   }
 ];
 

@@ -74,39 +74,49 @@ export class ResizeTool implements ITool {
     const element = this._app.selectedElementsManager.getAll()[0];
     if (!element) return;
 
-    // Calculate the scaling factors
-    const { x, y, width, height, transform } = this._originalBound!;
+    const { width, height, transform } = this._originalBound!;
 
-    const scaleX = Math.abs((width + deltaX) / width);
-    const scaleY = Math.abs((height + deltaY) / height);
+    // 计算新的缩放因子
+    const scaleX = (width + deltaX) / width;
+    const scaleY = (height + deltaY) / height;
 
-    // Apply scaling transformation to the element
-    const oldMatrix = new Matrix(...transform!);
-    const resizeMatrix = new Matrix();
-    resizeMatrix.scale(scaleX, scaleY);
-    resizeMatrix.translate(x * (1 - scaleX), y * (1 - scaleY));
-    oldMatrix.append(resizeMatrix);
-    element.updateTransform(oldMatrix);
+    // 创建一个新的变换矩阵
+    const transformMatrix = new Matrix(...transform);
+
+    // 计算元素的中心点位置
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    // 先将元素移动到原点进行缩放
+    transformMatrix.translate(-centerX, -centerY);
+    // 应用缩放
+    transformMatrix.scale(scaleX, scaleY);
+    // 将元素移回原来的中心位置
+    transformMatrix.translate(centerX, centerY);
+
+    // 更新元素的变换矩阵
+    element.updateTransform(transformMatrix);
   }
 
   private resizeMultipleElements(deltaX: number, deltaY: number) {
-    const selectedElements = this._app.selectedElementsManager.getAll();
+    const elements = this._app.selectedElementsManager.getAll();
+    elements.forEach((element) => {
+      const { width, height, transform } = element.getBounds();
 
-    for (const element of selectedElements) {
-      const data = element.getData();
-      const bounds = element.getBounds();
-      const { x, y, width, height } = bounds;
+      const scaleX = (width + deltaX) / width;
+      const scaleY = (height + deltaY) / height;
 
-      switch (this._currentControlHandle!.type) {
-        case 'ne':
-          data.width += deltaX;
-          data.height -= deltaY;
-          data.y += deltaY;
-          break;
-        // 其他控制器的处理逻辑
-      }
+      const centerX = width / 2;
+      const centerY = height / 2;
 
-      element.setData(data);
-    }
+      const transformMatrix = new Matrix(...transform);
+      transformMatrix.translate(-centerX, -centerY);
+      transformMatrix.scale(scaleX, scaleY);
+      transformMatrix.translate(centerX, centerY);
+
+      element.updateTransform(transformMatrix);
+    });
+
+    this._app.scene.renderAll();
   }
 }

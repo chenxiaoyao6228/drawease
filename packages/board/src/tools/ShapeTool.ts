@@ -2,6 +2,7 @@ import { Board } from '../Board';
 import BaseElement from '../elements/Base';
 import { createElement } from '../elements/util';
 import { IPoint, ITool, ToolType } from '../types';
+import { Matrix } from '../utils/math/Matrix';
 
 // 定义通用图形工具类
 export class ShapeTool implements ITool {
@@ -23,14 +24,16 @@ export class ShapeTool implements ITool {
     console.log(`${this.type} 工具：鼠标按下事件`);
     this.startPoint = { x: event.offsetX, y: event.offsetY };
     // 创建一个空白元素，开始绘制
+    // 初始化矩阵，设置平移部分为鼠标点击的位置
+    const initialMatrix = new Matrix(1, 0, 0, 1, this.startPoint.x, this.startPoint.y);
+
     this.currentElement = createElement({
       type: this.elementType,
-      x: this.startPoint.x,
-      y: this.startPoint.y,
       width: 0,
       height: 0,
       strokeColor: 'black',
-      strokeWidth: 2
+      strokeWidth: 2,
+      transform: initialMatrix.toArray()
     });
     this._app.scene.renderInteractiveElement(this.currentElement);
   }

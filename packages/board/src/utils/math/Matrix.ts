@@ -19,7 +19,7 @@ export class Matrix {
     this.ty = ty;
   }
 
-  getTransform(): IMatrixArr {
+  toArray(): IMatrixArr {
     return [this.a, this.b, this.c, this.d, this.tx, this.ty];
   }
 
