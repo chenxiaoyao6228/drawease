@@ -69,38 +69,38 @@ export class ControllHandleManager {
     }
     const element = selectedElements[0];
     const { width, height, transform } = element.getBounds();
+    const matrix = new Matrix(...transform);
 
-    // 使用元素的变换矩阵作为基础
-    const baseMatrix = new Matrix(...transform);
+    // 提取缩放因子
+    const scaleX = matrix.a;
+    const scaleY = matrix.d;
 
-    // 计算控制点位置
+    // 计算控制柄的逆缩放
+    const inverseScaleX = 1 / scaleX;
+    const inverseScaleY = 1 / scaleY;
+
+    // 假设控制柄的尺寸是固定的
     const handleSize = TRANSFORM_HANDLE_SIZE;
+
+    // 控制柄位置调整，同时逆向调整缩放
     const controlHandles: ControlHandles = {
-      rotation: {
-        transform: baseMatrix
-          .clone()
-          .translate(width / 2, -ROTATION_RESIZE_HANDLE_GAP)
-          .toArray(),
-        width: handleSize,
-        height: handleSize
-      },
       ne: {
-        transform: baseMatrix.clone().translate(width, 0).toArray(),
+        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, width, 0).toArray(),
         width: handleSize,
         height: handleSize
       },
       se: {
-        transform: baseMatrix.clone().translate(width, height).toArray(),
+        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, width, height).toArray(),
         width: handleSize,
         height: handleSize
       },
       sw: {
-        transform: baseMatrix.clone().translate(0, height).toArray(),
+        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, 0, height).toArray(),
         width: handleSize,
         height: handleSize
       },
       nw: {
-        transform: baseMatrix.clone().toArray(),
+        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, 0, 0).toArray(),
         width: handleSize,
         height: handleSize
       }

@@ -1,4 +1,4 @@
-import { IBound, IRectElementData, IRenderConfig } from '../types';
+import { IRectElementData, IRenderConfig } from '../types';
 import BaseElement from './Base';
 import { SELECTION_BORDRE_OFFSET } from './constant';
 
@@ -34,10 +34,5 @@ export default class RectElement extends BaseElement {
       ctx.strokeRect(-SELECTION_BORDRE_OFFSET, -SELECTION_BORDRE_OFFSET, width + 2 * SELECTION_BORDRE_OFFSET, height + 2 * SELECTION_BORDRE_OFFSET);
       ctx.restore();
     }
-  }
-
-  getBounds(): IBound {
-    const { width, height, transform } = this.getData() as IRectElementData;
-    return { width, height, transform };
   }
 }

@@ -47,7 +47,11 @@ export default abstract class BaseElement implements IBaseElement {
     });
   }
 
-  abstract getBounds(): IBound;
+  getBounds(): IBound {
+    const { width, height, transform } = this.getData() as IBaseElementData;
+    return { width, height, transform };
+  }
+
   abstract render(renderConfig: IRenderConfig): void;
   abstract renderSelectionBorder(ctx: CanvasRenderingContext2D): void;
 }
