@@ -5,10 +5,12 @@ import { isPointInBound } from './util';
 
 export default abstract class BaseElement implements IBaseElement {
   isSelected: boolean;
+  protected _transform: Matrix;
   protected _dataManager: DataManager<IBaseElementData>;
 
   constructor(data: IBaseElementData) {
     this._dataManager = new DataManager(data);
+    this._transform = new Matrix(...data.transform);
     this.isSelected = false;
   }
 
@@ -21,6 +23,9 @@ export default abstract class BaseElement implements IBaseElement {
   }
 
   setData(data: Partial<IBaseElementData>) {
+    if (data.transform) {
+      this._transform.set(...data.transform);
+    }
     this._dataManager.setData(data);
   }
 
@@ -45,6 +50,16 @@ export default abstract class BaseElement implements IBaseElement {
       height,
       transform
     });
+  }
+
+  move(dx: number, dy: number) {
+    const transform = this._transform.clone().translate(dx, dy);
+    this.updateTransform(transform);
+  }
+
+  getRotation(): number {
+    const { a, b } = this._transform;
+    return Math.atan2(b, a);
   }
 
   getBounds(): IBound {

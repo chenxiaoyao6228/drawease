@@ -90,10 +90,12 @@ export interface IRenderConfig {
 export interface IBaseElement {
   setSelected: (selected: boolean) => void;
   getData: () => IBaseElementData;
-  setData: (data: IBaseElementData) => void;
+  setData: (data: Partial<IBaseElementData>) => void;
   render: (renderConfig: IRenderConfig) => void;
   renderSelectionBorder: (ctx: CanvasRenderingContext2D) => void;
   hitTest: (e: PointerEvent) => boolean;
+  move: (dx: number, dy: number) => void;
   updateTransform(matrix: Matrix): void;
+  getRotation(): number;
   getBounds(): IBound;
 }

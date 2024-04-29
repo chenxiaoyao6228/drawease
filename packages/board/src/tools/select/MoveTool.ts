@@ -32,10 +32,13 @@ export class MoveTool implements ITool {
 
   moveSelectedElements(elements: IBaseElement[], dx: number, dy: number) {
     elements.forEach((element) => {
-      const currentTransform = new Matrix(...element.getData().transform);
-      const translationMatrix = new Matrix(1, 0, 0, 1, dx, dy); // Create a translation matrix
-      currentTransform.append(translationMatrix); // Append the translation to the current transform
-      element.updateTransform(currentTransform); // Update the element with the new matrix
+      const rotation = element.getRotation();
+      const matrix = new Matrix();
+      matrix.translate(dx, dy);
+      matrix.rotate(-rotation);
+      const transformedPoint = matrix.apply({ x: 0, y: 0 });
+
+      element.move(transformedPoint.x, transformedPoint.y);
     });
     this._app.scene.renderAll();
   }
