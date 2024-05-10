@@ -21,8 +21,8 @@ export class DataManager<T extends Record<string, any>> {
     this._data[key] = value;
   }
 
-  getValues<K extends keyof T>(keys: K[]): Partial<T> {
-    const values: Partial<T> = {};
+  getValues<K extends keyof T>(keys: K[]): Pick<T, K> {
+    const values: Pick<T, K> = {} as Pick<T, K>;
     keys.forEach((key) => {
       values[key] = this._data[key];
     });
