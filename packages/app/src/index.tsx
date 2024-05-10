@@ -1,4 +1,4 @@
-import './index.css';
+import './index.scss';
 
 import { BaseElementData, Board } from '@drawease/board';
 import React from 'react';

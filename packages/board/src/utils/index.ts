@@ -1,3 +1,5 @@
+import { IPoint } from '../types';
+
 export { DataManager } from './DataManager';
 export { EventEmitter } from './EventEmitter';
 
@@ -16,4 +18,31 @@ export function rafThrottle<T extends (...args: any[]) => void>(fn: T): T {
   };
 
   return throttled as T;
+}
+
+export function getCursorPos(e: PointerEvent) {
+  return {
+    x: e.offsetX,
+    y: e.offsetY
+  };
+}
+
+interface ITransformParams {
+  scrollX: number;
+  scrollY: number;
+  zoom: number;
+}
+
+export function convertViewportToSceneCoords(viewportCoords: IPoint, params: ITransformParams): IPoint {
+  return {
+    x: viewportCoords.x / params.zoom + params.scrollX,
+    y: viewportCoords.y / params.zoom + params.scrollY
+  };
+}
+
+export function convertSceneToViewportCoords(sceneCoords: IPoint, params: ITransformParams): IPoint {
+  return {
+    x: (sceneCoords.x - params.scrollX) * params.zoom,
+    y: (sceneCoords.y - params.scrollY) * params.zoom
+  };
 }

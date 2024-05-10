@@ -2,6 +2,7 @@ import { Board } from '../Board';
 import { ITool, ToolType } from '../types';
 import { rafThrottle } from '../utils';
 import { EventEmitter } from '../utils/EventEmitter';
+import { PanTool } from './PanTool';
 import { LineTool } from './PathTool';
 import { SelectTool } from './select';
 import { DiamondTool, EllipseTool, RectTool } from './ShapeTool';
@@ -70,10 +71,10 @@ export default class ToolManager {
   }
 
   private _registerTools() {
-    const DEFAULT_TOOL = ToolType.Select;
+    const DEFAULT_TOOL = ToolType.Pan;
 
     // 注册类
-    const directConstructibleTools: ITool[] = [new SelectTool(this._app), new LineTool(this._app)];
+    const directConstructibleTools: ITool[] = [new PanTool(this._app), new SelectTool(this._app), new LineTool(this._app)];
     directConstructibleTools.forEach((tool) => this._tools.set(tool.type, tool));
 
     // 注册工厂
@@ -83,7 +84,7 @@ export default class ToolManager {
       this._tools.set(toolInstance.type, toolInstance);
     });
 
-    this._activeTool = this._tools.get(DEFAULT_TOOL) as ITool;
+    this.invokeToolByType(DEFAULT_TOOL);
   }
 
   invokeToolByType(toolType: ToolType) {

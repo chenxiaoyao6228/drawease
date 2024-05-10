@@ -18,6 +18,7 @@ export interface ITool {
 }
 
 export enum ToolType {
+  Pan = 'pan',
   Select = 'select',
   Move = 'select_move',
   Rotate = 'select_rotate',
@@ -31,16 +32,10 @@ export enum ToolType {
 
 // ------ Scene ---------
 
-export interface IZoom {
-  value: number;
-}
-
 export interface ISceneData {
   width: number;
   height: number;
-  zoom: IZoom;
-  offsetLeft: number;
-  offsetTop: number;
+  zoom: number;
   scrollX: number;
   scrollY: number;
 }

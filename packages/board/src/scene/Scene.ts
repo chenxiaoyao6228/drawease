@@ -2,7 +2,7 @@ import { RoughCanvas } from 'roughjs/bin/canvas';
 import rough from 'roughjs/bin/rough';
 
 import { Board } from '../Board';
-import { SELECTION_BORDRE_OFFSET } from '../elements/constant';
+import { IDENTITY_TRANSFORM_DATA, SELECTION_BORDER_OFFSET } from '../elements/constant';
 import { createElement, getMultipleElementsBounds } from '../elements/util';
 import { IBaseElement, IBaseElementData, IOptions, ISceneData } from '../types';
 import { rafThrottle } from '../utils';
@@ -10,6 +10,7 @@ import { DataManager } from '../utils/DataManager';
 
 export class Scene {
   innerCanvasesContainer!: HTMLElement;
+  dataManager: DataManager<ISceneData>;
   private _app: Board;
   private _elements: IBaseElement[] = [];
   private _interactiveCanvas!: HTMLCanvasElement;
@@ -18,16 +19,13 @@ export class Scene {
   private _staticCanvas!: HTMLCanvasElement;
   private _staticCtx!: CanvasRenderingContext2D;
   private _staticRC!: RoughCanvas;
-  private _dataManager: DataManager<ISceneData>;
 
   constructor(app: Board, options: IOptions) {
     this._app = app;
-    this._dataManager = new DataManager({
+    this.dataManager = new DataManager({
       width: options.width || window.innerWidth,
       height: options.height || window.innerHeight,
-      zoom: { value: 1 },
-      offsetLeft: 0,
-      offsetTop: 0,
+      zoom: 1,
       scrollX: 0,
       scrollY: 0
     });
@@ -35,8 +33,8 @@ export class Scene {
   }
 
   private initCanvases(container: HTMLElement) {
-    const width = this._dataManager.getValue('width');
-    const height = this._dataManager.getValue('height');
+    const width = this.dataManager.getValue('width');
+    const height = this.dataManager.getValue('height');
 
     // Initialize canvas wrapper
     const innerCanvasesContainer = document.createElement('div');
@@ -50,8 +48,10 @@ export class Scene {
     this._interactiveCanvas = document.createElement('canvas');
     this._interactiveCanvas.id = 'interative-canvas';
     this._interactiveCtx = this._interactiveCanvas.getContext('2d')!;
-    this._interactiveCanvas.width = width;
-    this._interactiveCanvas.height = height;
+
+    this._interactiveCanvas.width = width * window.devicePixelRatio;
+    this._interactiveCanvas.height = height * window.devicePixelRatio;
+    this._interactiveCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
     this._interactiveCanvas.style.cssText = `
       position: absolute;
@@ -70,8 +70,10 @@ export class Scene {
     this._staticCanvas = document.createElement('canvas');
     this._staticCanvas.id = 'static-canvas';
     this._staticCtx = this._staticCanvas.getContext('2d')!;
-    this._staticCanvas.width = width;
-    this._staticCanvas.height = height;
+
+    this._staticCanvas.width = width * window.devicePixelRatio;
+    this._staticCanvas.height = height * window.devicePixelRatio;
+    this._staticCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
     this._staticCanvas.style.cssText = `
       position: absolute;
@@ -87,16 +89,18 @@ export class Scene {
     this._staticRC = rough.canvas(this._staticCanvas);
   }
 
-  // 渲染相关
-
   clearInteractiveCanvas() {
-    const { width, height } = this._dataManager.getValues(['width', 'height']);
-    this._interactiveCtx.clearRect(0, 0, width!, height!);
+    this.clearCanvas(this._interactiveCtx);
+  }
+
+  clearCanvas(ctx: CanvasRenderingContext2D) {
+    const { width, height } = this.dataManager.getValues(['width', 'height']);
+    ctx.clearRect(0, 0, width, height);
   }
 
   renderInteractiveElement(elements: IBaseElement) {
     console.log('[board]: renderInteractiveElement----->');
-    this.clearInteractiveCanvas();
+    this.clearCanvas(this._interactiveCtx);
     const _elements = Array.isArray(elements) ? elements : [elements];
     _elements.forEach((element) => {
       element.render({
@@ -108,12 +112,33 @@ export class Scene {
   }
 
   renderAll = rafThrottle(() => {
-    const { width, height } = this._dataManager.getValues(['width', 'height']);
-    this._staticCtx.clearRect(0, 0, width!, height!);
+    const { scrollX, scrollY, zoom } = this.dataManager.getValues(['width', 'height', 'scrollX', 'scrollY', 'zoom']);
+
+    // reset transform
+    this._interactiveCtx.setTransform(...IDENTITY_TRANSFORM_DATA);
+    this._staticCtx.setTransform(...IDENTITY_TRANSFORM_DATA);
+
+    this._interactiveCtx.scale(zoom, zoom);
+    this._staticCtx.scale(zoom, zoom);
+
+    this.clearCanvas(this._interactiveCtx);
+    this.clearCanvas(this._staticCtx);
+
+    this._interactiveCtx.save();
+    this._staticCtx.save();
+
+    // Apply zoom
+    this._interactiveCtx.translate(-scrollX, -scrollY);
+    this._staticCtx.translate(-scrollX, -scrollY);
+
     this.renderStaticElements(this._staticCtx, this._elements);
-    this.clearInteractiveCanvas();
+
     this.renderSelectionBorder();
+
     this.renderTransformHandles();
+
+    this._interactiveCtx.restore();
+    this._staticCtx.restore();
   });
 
   private renderStaticElements(ctx: CanvasRenderingContext2D, elements: IBaseElement[]) {
@@ -137,7 +162,7 @@ export class Scene {
       ctx.setLineDash([2]);
       ctx.strokeStyle = 'blue';
       ctx.lineWidth = 1;
-      ctx.strokeRect(x - SELECTION_BORDRE_OFFSET, y - SELECTION_BORDRE_OFFSET, width + SELECTION_BORDRE_OFFSET * 2, height + SELECTION_BORDRE_OFFSET * 2);
+      ctx.strokeRect(x - SELECTION_BORDER_OFFSET, y - SELECTION_BORDER_OFFSET, width + SELECTION_BORDER_OFFSET * 2, height + SELECTION_BORDER_OFFSET * 2);
 
       ctx.restore();
     }

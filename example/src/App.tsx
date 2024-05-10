@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 
 import DrawEaseApp from '@drawease/app';
 
@@ -7,7 +7,14 @@ import initialData from './mockData';
 const App = () => {
   return (
     <div className="app">
-      <DrawEaseApp initialData={initialData} />
+      <header> Outer Header</header>
+      <main>
+        <aside>Outer LeftAside</aside>
+        <section>
+          <DrawEaseApp initialData={initialData} />
+        </section>
+      </main>
+      <footer></footer>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { IRectElementData, IRenderConfig } from '../types';
 import BaseElement from './Base';
-import { SELECTION_BORDRE_OFFSET } from './constant';
+import { SELECTION_BORDER_OFFSET } from './constant';
 
 export default class RectElement extends BaseElement {
   constructor(data: IRectElementData) {
@@ -31,7 +31,7 @@ export default class RectElement extends BaseElement {
       ctx.transform(...transform);
       ctx.strokeStyle = 'blue';
       ctx.lineWidth = 1;
-      ctx.strokeRect(-SELECTION_BORDRE_OFFSET, -SELECTION_BORDRE_OFFSET, width + 2 * SELECTION_BORDRE_OFFSET, height + 2 * SELECTION_BORDRE_OFFSET);
+      ctx.strokeRect(-SELECTION_BORDER_OFFSET, -SELECTION_BORDER_OFFSET, width + 2 * SELECTION_BORDER_OFFSET, height + 2 * SELECTION_BORDER_OFFSET);
       ctx.restore();
     }
   }
