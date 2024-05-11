@@ -46,3 +46,9 @@ export function convertSceneToViewportCoords(sceneCoords: IPoint, params: ITrans
     y: (sceneCoords.y - params.scrollY) * params.zoom
   };
 }
+
+export function svgToDataURL(svgString: string): string {
+  const encoded = encodeURIComponent(svgString).replace(/'/g, '%27').replace(/"/g, '%22');
+  const header = 'data:image/svg+xml,';
+  return `${header}${encoded}`;
+}

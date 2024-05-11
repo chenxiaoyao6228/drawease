@@ -17,7 +17,9 @@ export class ShapeTool implements ITool {
     this.type = type;
     this.elementType = elementType;
   }
-  active() {}
+  active() {
+    this._app.cursorManager.applyRegisteredCursor('crosshair');
+  }
   deactive() {}
 
   pointerDown(event: PointerEvent) {

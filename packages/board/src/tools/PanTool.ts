@@ -12,11 +12,14 @@ export class PanTool implements ITool {
     this.type = ToolType.Pan;
   }
   active() {
-    // update cursor
+    this._app.cursorManager.applyRegisteredCursor('default');
   }
-  deactive() {}
+  deactive() {
+    this._app.cursorManager.applyRegisteredCursor('default');
+  }
   pointerDown(event: PointerEvent) {
     this._initialPointerPosition = getCursorPos(event);
+    this._app.cursorManager.applyRegisteredCursor('grabbing');
   }
   pointerMove(event: PointerEvent) {
     const { scrollX, scrollY, zoom } = this._app.scene.dataManager.getData();
@@ -33,5 +36,6 @@ export class PanTool implements ITool {
   }
   pointerUp(event: PointerEvent) {
     this._initialPointerPosition = null;
+    this._app.cursorManager.applyRegisteredCursor('grab');
   }
 }
