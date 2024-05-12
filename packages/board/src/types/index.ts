@@ -35,7 +35,6 @@ export enum ToolType {
 export interface ISceneData {
   width: number;
   height: number;
-  zoom: number;
   scrollX: number;
   scrollY: number;
 }

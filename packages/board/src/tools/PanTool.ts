@@ -22,7 +22,8 @@ export class PanTool implements ITool {
     this._app.cursorManager.applyRegisteredCursor('grabbing');
   }
   pointerMove(event: PointerEvent) {
-    const { scrollX, scrollY, zoom } = this._app.scene.dataManager.getData();
+    const { scrollX, scrollY } = this._app.scene.dataManager.getData();
+    const zoom = this._app.zoomManager.getZoom();
     const { x: cursorX, y: cursorY } = getCursorPos(event);
     const dx = cursorX / zoom - this._initialPointerPosition!.x / zoom;
     const dy = cursorY / zoom - this._initialPointerPosition!.y / zoom;

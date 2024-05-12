@@ -25,11 +25,17 @@ export class Scene {
     this.dataManager = new DataManager({
       width: options.width || window.innerWidth,
       height: options.height || window.innerHeight,
-      zoom: 1,
       scrollX: 0,
       scrollY: 0
     });
     this.initCanvases(options.container);
+    this.bindEvents();
+  }
+
+  private bindEvents() {
+    this._app.zoomManager.eventEmitter.on('zoomChange', () => {
+      this.renderAll();
+    });
   }
 
   private initCanvases(container: HTMLElement) {
@@ -112,7 +118,8 @@ export class Scene {
   }
 
   renderAll = rafThrottle(() => {
-    const { scrollX, scrollY, zoom } = this.dataManager.getValues(['width', 'height', 'scrollX', 'scrollY', 'zoom']);
+    const { scrollX, scrollY } = this.dataManager.getValues(['width', 'height', 'scrollX', 'scrollY']);
+    const zoom = this._app.zoomManager.getZoom();
 
     // reset transform
     this._interactiveCtx.setTransform(...IDENTITY_TRANSFORM_DATA);
