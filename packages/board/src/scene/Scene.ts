@@ -24,9 +24,7 @@ export class Scene {
     this._app = app;
     this.dataManager = new DataManager({
       width: options.width || window.innerWidth,
-      height: options.height || window.innerHeight,
-      scrollX: 0,
-      scrollY: 0
+      height: options.height || window.innerHeight
     });
     this.initCanvases(options.container);
     this.bindEvents();
@@ -34,6 +32,9 @@ export class Scene {
 
   private bindEvents() {
     this._app.zoomManager.eventEmitter.on('zoomChange', () => {
+      this.renderAll();
+    });
+    this._app.viewportManager.eventEmitter.on('viewportScrollChange', () => {
       this.renderAll();
     });
   }
@@ -52,7 +53,7 @@ export class Scene {
 
     // Initialize interactive canvas
     this._interactiveCanvas = document.createElement('canvas');
-    this._interactiveCanvas.id = 'interative-canvas';
+    this._interactiveCanvas.id = 'interactive-canvas';
     this._interactiveCtx = this._interactiveCanvas.getContext('2d')!;
 
     this._interactiveCanvas.width = width * window.devicePixelRatio;
@@ -65,7 +66,6 @@ export class Scene {
       height: ${height}px;
       left: 0; 
       top: 0;
-      border: 1px solid red;
       z-index: 2;
     `;
 
@@ -87,12 +87,17 @@ export class Scene {
       height: ${height}px;
       left: 0; 
       top: 0;
-      border: 1px solid blue;
       z-index: 1;
     `;
 
     innerCanvasesContainer.appendChild(this._staticCanvas);
     this._staticRC = rough.canvas(this._staticCanvas);
+
+    const rect = this._interactiveCanvas.getBoundingClientRect();
+    this._app.viewportManager.updateViewportOffset({
+      offsetLeft: rect.left,
+      offsetTop: rect.top
+    });
   }
 
   clearInteractiveCanvas() {
@@ -101,7 +106,7 @@ export class Scene {
 
   clearCanvas(ctx: CanvasRenderingContext2D) {
     const { width, height } = this.dataManager.getValues(['width', 'height']);
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width * window.devicePixelRatio, height * window.devicePixelRatio);
   }
 
   renderInteractiveElement(elements: IBaseElement) {
@@ -118,15 +123,14 @@ export class Scene {
   }
 
   renderAll = rafThrottle(() => {
-    const { scrollX, scrollY } = this.dataManager.getValues(['width', 'height', 'scrollX', 'scrollY']);
+    const { scrollX, scrollY } = this._app.viewportManager.getViewportScroll();
     const zoom = this._app.zoomManager.getZoom();
+
+    console.log('zoom', zoom);
 
     // reset transform
     this._interactiveCtx.setTransform(...IDENTITY_TRANSFORM_DATA);
     this._staticCtx.setTransform(...IDENTITY_TRANSFORM_DATA);
-
-    this._interactiveCtx.scale(zoom, zoom);
-    this._staticCtx.scale(zoom, zoom);
 
     this.clearCanvas(this._interactiveCtx);
     this.clearCanvas(this._staticCtx);
@@ -135,8 +139,14 @@ export class Scene {
     this._staticCtx.save();
 
     // Apply zoom
-    this._interactiveCtx.translate(-scrollX, -scrollY);
-    this._staticCtx.translate(-scrollX, -scrollY);
+    const dpi = window.devicePixelRatio;
+    this._interactiveCtx.scale(zoom * dpi, zoom * dpi); // 注意重置矩阵后要重新*dpi系数
+    this._staticCtx.scale(zoom * dpi, zoom * dpi);
+
+    this._interactiveCtx.translate(scrollX, scrollY);
+    this._staticCtx.translate(scrollX, scrollY);
+
+    console.log(`[drawease:] this._staticCtx.getTransform(): ${this._staticCtx.getTransform()}`);
 
     this.renderStaticElements(this._staticCtx, this._elements);
 

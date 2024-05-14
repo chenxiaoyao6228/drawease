@@ -20,7 +20,8 @@ export default class RectElement extends BaseElement {
 
     ctx.save();
     ctx.transform(...transform);
-    rc.rectangle(0, 0, width, height, roughOptions);
+    // rc.rectangle(0, 0, width, height, roughOptions);
+    ctx.strokeRect(0, 0, width, height);
     ctx.restore();
   }
 

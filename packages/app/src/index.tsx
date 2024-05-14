@@ -5,7 +5,7 @@ import React from 'react';
 
 import { Bottom } from './components/Bottom';
 import Editor from './components/Editor';
-import { EditorProvider, useEditor } from './components/Editor/editorContext';
+import { EditorProvider } from './components/Editor/editorContext';
 import ToolBar from './components/ToolBar';
 
 // 給外部暴露的接口
@@ -15,8 +15,6 @@ interface IDrawEaseAppProps {
 }
 
 const DrawEaseApp = (props: IDrawEaseAppProps) => {
-  const { editor } = useEditor();
-
   return (
     <EditorProvider>
       {/* Board撑满，其他layer层绝对定位 */}

@@ -21,7 +21,7 @@ export function Zoom() {
 
   return (
     <div>
-      <button onClick={() => editor?.zoomManager.zoomIn()}>-</button>
+      <button onClick={() => editor?.zoomManager.zoomOut()}>-</button>
       {(zoom * 100).toFixed(0) + '%'}
       <button onClick={() => editor?.zoomManager.zoomIn()}>+</button>
     </div>
