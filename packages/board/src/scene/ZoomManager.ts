@@ -86,6 +86,10 @@ export class ZoomManager {
     this.setZoom(newZoom, center || this.getCanvasCenter());
   }
 
+  resetZoom() {
+    this.setZoom(1, this.getCanvasCenter());
+  }
+
   getCanvasCenter() {
     const { width, height } = this._app.viewportManager.getViewportSize();
     return {

@@ -22,7 +22,7 @@ export function Zoom() {
   return (
     <div>
       <button onClick={() => editor?.zoomManager.zoomOut()}>-</button>
-      {(zoom * 100).toFixed(0) + '%'}
+      <span onDoubleClick={() => editor?.zoomManager.resetZoom()}>{(zoom * 100).toFixed(0) + '%'}</span>
       <button onClick={() => editor?.zoomManager.zoomIn()}>+</button>
     </div>
   );
