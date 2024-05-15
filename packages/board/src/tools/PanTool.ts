@@ -1,6 +1,5 @@
 import { Board } from '../Board';
 import { IPoint, ITool, ToolType } from '../types';
-import { getCursorPos } from '../utils';
 
 export class PanTool implements ITool {
   _app: Board;
@@ -18,18 +17,18 @@ export class PanTool implements ITool {
     this._app.cursorManager.applyRegisteredCursor('default');
   }
   pointerDown(event: PointerEvent) {
-    this._initialPointerPosition = getCursorPos(event);
+    this._initialPointerPosition = this._app.viewportManager.getMousePosition(event);
     this._app.cursorManager.applyRegisteredCursor('grabbing');
   }
   pointerMove(event: PointerEvent) {
     const zoom = this._app.zoomManager.getZoom();
-    const { x: cursorX, y: cursorY } = getCursorPos(event);
+    const { x: cursorX, y: cursorY } = this._app.viewportManager.getMousePosition(event);
     const dx = cursorX / zoom - this._initialPointerPosition!.x / zoom;
     const dy = cursorY / zoom - this._initialPointerPosition!.y / zoom;
 
     this._app.viewportManager.translate(dx, dy);
     this._app.scene.renderAll();
-    this._initialPointerPosition = getCursorPos(event);
+    this._initialPointerPosition = this._app.viewportManager.getMousePosition(event);
   }
   pointerUp(event: PointerEvent) {
     this._initialPointerPosition = null;

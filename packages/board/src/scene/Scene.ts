@@ -2,7 +2,7 @@ import { RoughCanvas } from 'roughjs/bin/canvas';
 import rough from 'roughjs/bin/rough';
 
 import { Board } from '../Board';
-import { IDENTITY_TRANSFORM_DATA, SELECTION_BORDER_OFFSET } from '../elements/constant';
+import { SELECTION_BORDER_OFFSET } from '../elements/constant';
 import { createElement, getMultipleElementsBounds } from '../elements/util';
 import { IBaseElement, IBaseElementData, IOptions, ISceneData } from '../types';
 import { rafThrottle } from '../utils';
@@ -126,11 +126,9 @@ export class Scene {
     const { scrollX, scrollY } = this._app.viewportManager.getViewportScroll();
     const zoom = this._app.zoomManager.getZoom();
 
-    console.log('zoom', zoom);
-
     // reset transform
-    this._interactiveCtx.setTransform(...IDENTITY_TRANSFORM_DATA);
-    this._staticCtx.setTransform(...IDENTITY_TRANSFORM_DATA);
+    this._interactiveCtx.resetTransform();
+    this._staticCtx.resetTransform();
 
     this.clearCanvas(this._interactiveCtx);
     this.clearCanvas(this._staticCtx);
@@ -146,7 +144,7 @@ export class Scene {
     this._interactiveCtx.translate(scrollX, scrollY);
     this._staticCtx.translate(scrollX, scrollY);
 
-    console.log(`[drawease:] this._staticCtx.getTransform(): ${this._staticCtx.getTransform()}`);
+    // console.log(`[drawease:] this._staticCtx.getTransform(): ${this._staticCtx.getTransform()}`);
 
     this.renderStaticElements(this._staticCtx, this._elements);
 
@@ -190,7 +188,7 @@ export class Scene {
 
   renderTransformHandles() {
     // 根据选中的元素添加
-    this._app.controllHandleManager.render({
+    this._app.controlHandleManager.render({
       rc: this._staticRC,
       canvas: this._interactiveCanvas,
       ctx: this._interactiveCtx

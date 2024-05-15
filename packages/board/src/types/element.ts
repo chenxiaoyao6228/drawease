@@ -94,7 +94,7 @@ export interface IBaseElement {
   render: (renderConfig: IRenderConfig) => void;
   renderSelectionBorder: (ctx: CanvasRenderingContext2D) => void;
   hitTest: (e: PointerEvent) => boolean;
-  move: (dx: number, dy: number) => void;
+  translate: (dx: number, dy: number) => void;
   updateTransform(matrix: Matrix): void;
   getRotation(): number;
   getBounds(): IBound;

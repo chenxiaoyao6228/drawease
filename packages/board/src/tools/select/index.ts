@@ -58,7 +58,7 @@ export class SelectTool implements ITool {
       y: event.offsetY
     };
 
-    const controlHandle = this._app.controllHandleManager.getControlHandleFromPoint(point);
+    const controlHandle = this._app.controlHandleManager.getControlHandleFromPoint(point);
 
     // 用户选中了控制点
     if (controlHandle) {

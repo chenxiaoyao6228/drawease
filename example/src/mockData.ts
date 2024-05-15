@@ -61,7 +61,7 @@ const initialData = [
     type: 'rectangle',
     width: 100,
     height: 100,
-    transform: [1, 0, 0, 1, 0, 0]
+    transform: [1, 0, 0, 1, 50, 100]
   }
 ];
 

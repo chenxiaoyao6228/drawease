@@ -34,7 +34,7 @@ export class ResizeTool implements ITool {
       y: event.offsetY
     };
     // 记录当前类型
-    this._currentControlHandle = this._app.controllHandleManager.getControlHandleFromPoint(this._initialPointerPosition);
+    this._currentControlHandle = this._app.controlHandleManager.getControlHandleFromPoint(this._initialPointerPosition);
     // 初始化矩阵
     this._originalBound = this._app.selectedElementsManager.getSelectedElements()[0].getBounds();
   }

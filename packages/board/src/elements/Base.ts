@@ -52,7 +52,7 @@ export default abstract class BaseElement implements IBaseElement {
     });
   }
 
-  move(dx: number, dy: number) {
+  translate(dx: number, dy: number) {
     const transform = this._transform.clone().translate(dx, dy);
     this.updateTransform(transform);
   }

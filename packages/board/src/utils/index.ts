@@ -1,7 +1,7 @@
 import { IPoint } from '../types';
-
-export { DataManager } from './DataManager';
-export { EventEmitter } from './EventEmitter';
+export * from './DataManager';
+export * from './EventEmitter';
+export * from './math/Matrix';
 
 export const randomInteger = () => Math.floor(Math.random() * 2 ** 31);
 
@@ -18,13 +18,6 @@ export function rafThrottle<T extends (...args: any[]) => void>(fn: T): T {
   };
 
   return throttled as T;
-}
-
-export function getCursorPos(e: PointerEvent) {
-  return {
-    x: e.offsetX,
-    y: e.offsetY
-  };
 }
 
 interface ITransformParams {

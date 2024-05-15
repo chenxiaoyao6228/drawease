@@ -13,17 +13,15 @@ export class MoveTool implements ITool {
   active() {}
   deactive() {}
   pointerDown(event: PointerEvent) {
-    this._initialPointerPosition = {
-      x: event.offsetX,
-      y: event.offsetY
-    };
+    this._initialPointerPosition = this._app.viewportManager.getMousePosition(event);
   }
   pointerMove(event: PointerEvent) {
+    const point = this._app.viewportManager.getMousePosition(event);
     if (this._app.selectedElementsManager.getSelectedElements().length > 0) {
-      const dx = event.offsetX - this._initialPointerPosition!.x;
-      const dy = event.offsetY - this._initialPointerPosition!.y;
+      const dx = point.x - this._initialPointerPosition!.x;
+      const dy = point.y - this._initialPointerPosition!.y;
       this.moveSelectedElements(this._app.selectedElementsManager.getSelectedElements(), dx, dy);
-      this._initialPointerPosition = { x: event.offsetX, y: event.offsetY };
+      this._initialPointerPosition = point;
     }
   }
   pointerUp(event: PointerEvent) {
@@ -38,7 +36,7 @@ export class MoveTool implements ITool {
       matrix.rotate(-rotation);
       const transformedPoint = matrix.apply({ x: 0, y: 0 });
 
-      element.move(transformedPoint.x, transformedPoint.y);
+      element.translate(transformedPoint.x, transformedPoint.y);
     });
     this._app.scene.renderAll();
   }

@@ -1,4 +1,4 @@
-import { ControllHandleManager } from './controlHandles/controllHandleManager';
+import { ControlHandleManager } from './controlHandles/controllHandleManager';
 import { CursorManager } from './CursorManager';
 import { Scene } from './scene/Scene';
 import { ViewportManager } from './scene/ViewportManager';
@@ -11,7 +11,7 @@ export class Board {
   tool: ToolManager;
   scene: Scene;
   selectedElementsManager: SelectedElementsManager;
-  controllHandleManager: ControllHandleManager;
+  controlHandleManager: ControlHandleManager;
   cursorManager: CursorManager;
   zoomManager: ZoomManager;
   viewportManager: ViewportManager;
@@ -27,6 +27,6 @@ export class Board {
     this.cursorManager = new CursorManager(this);
     this.tool = new ToolManager(this);
     this.selectedElementsManager = new SelectedElementsManager(this);
-    this.controllHandleManager = new ControllHandleManager(this);
+    this.controlHandleManager = new ControlHandleManager(this);
   }
 }

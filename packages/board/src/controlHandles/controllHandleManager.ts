@@ -5,9 +5,9 @@ import { Matrix } from '../utils/math/Matrix';
 import { ControlHandleObj, ControlHandles, ControlHandleType } from './../types/controlHandle';
 
 const TRANSFORM_HANDLE_SIZE = 8;
-const ROTATION_RESIZE_HANDLE_GAP = 36;
+const ROTATION_RESIZE_HANDLE_GAP = 22;
 
-export class ControllHandleManager {
+export class ControlHandleManager {
   _app: Board;
   constructor(app: Board) {
     this._app = app;
@@ -19,6 +19,7 @@ export class ControllHandleManager {
 
     if (selectedElements.length === 1) {
       const handles = this.generateControlHandles();
+      console.log('handles', handles);
 
       ctx.save();
       ctx.strokeStyle = 'blue';
@@ -69,6 +70,7 @@ export class ControllHandleManager {
     }
     const element = selectedElements[0];
     const { width, height, transform } = element.getBounds();
+    console.log(`[drawease:] transform: ${transform}`);
     const matrix = new Matrix(...transform);
 
     // 提取缩放因子
@@ -84,26 +86,34 @@ export class ControllHandleManager {
 
     // 控制柄位置调整，同时逆向调整缩放
     const controlHandles: ControlHandles = {
-      ne: {
-        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, width, 0).toArray(),
-        width: handleSize,
-        height: handleSize
-      },
-      se: {
-        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, width, height).toArray(),
-        width: handleSize,
-        height: handleSize
-      },
-      sw: {
-        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, 0, height).toArray(),
-        width: handleSize,
-        height: handleSize
-      },
-      nw: {
-        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, 0, 0).toArray(),
+      rotation: {
+        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, width / 2 - handleSize / 2, -(handleSize + ROTATION_RESIZE_HANDLE_GAP))
+          .append(matrix)
+          .toArray(),
         width: handleSize,
         height: handleSize
       }
+      // ne: {
+      //   transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, width, 0).append(matrix).toArray(),
+      //   width: handleSize,
+      //   height: handleSize
+      // },
+      // se: {
+      //   transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, width, height).append(matrix).toArray(),
+      //   width: handleSize,
+      //   height: handleSize
+      // },
+
+      // nw: {
+      //   transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, 0, 0).append(matrix).toArray(),
+      //   width: handleSize,
+      //   height: handleSize
+      // },
+      // sw: {
+      //   transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, 0, height).append(matrix).toArray(),
+      //   width: handleSize,
+      //   height: handleSize
+      // },
     };
 
     return controlHandles;

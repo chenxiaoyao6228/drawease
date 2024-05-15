@@ -40,5 +40,9 @@
   "editor.formatOnSave": true,
   "eslint.validate": ["javascript", "typescript", "reacttypescript", "reactjavascript"],
   "conventionalCommits.scopes": ["standard"],
-  "cSpell.words": ["drawease"]
+  "cSpell.words": [
+    "datas",
+    "deactive",
+    "drawease"
+  ]
 }

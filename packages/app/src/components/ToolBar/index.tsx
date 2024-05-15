@@ -7,7 +7,7 @@ import { useEditor } from '../Editor/editorContext';
 
 const ToolBar = () => {
   const { editor } = useEditor();
-  const [activeType, setActiveType] = useState<ToolType>(ToolType.Pan);
+  const [activeType, setActiveType] = useState<ToolType>(ToolType.Select);
   const Tools = [
     {
       type: ToolType.Pan,

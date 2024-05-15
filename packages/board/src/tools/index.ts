@@ -71,7 +71,7 @@ export default class ToolManager {
   }
 
   private _registerTools() {
-    const DEFAULT_TOOL = ToolType.Pan;
+    const DEFAULT_TOOL = ToolType.Select;
 
     // 注册类
     const directConstructibleTools: ITool[] = [new PanTool(this._app), new SelectTool(this._app), new LineTool(this._app)];
