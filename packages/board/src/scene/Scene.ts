@@ -127,14 +127,11 @@ export class Scene {
     const zoom = this._app.zoomManager.getZoom();
 
     // reset transform
-    this._interactiveCtx.resetTransform();
-    this._staticCtx.resetTransform();
+    this._interactiveCtx.reset();
+    this._staticCtx.reset();
 
     this.clearCanvas(this._interactiveCtx);
     this.clearCanvas(this._staticCtx);
-
-    this._interactiveCtx.save();
-    this._staticCtx.save();
 
     // Apply zoom
     const dpi = window.devicePixelRatio;
@@ -144,20 +141,16 @@ export class Scene {
     this._interactiveCtx.translate(scrollX, scrollY);
     this._staticCtx.translate(scrollX, scrollY);
 
-    // console.log(`[drawease:] this._staticCtx.getTransform(): ${this._staticCtx.getTransform()}`);
+    console.log(`[drawease:] this._staticCtx.getTransform(): ${this._staticCtx.getTransform()}`);
 
     this.renderStaticElements(this._staticCtx, this._elements);
 
     this.renderSelectionBorder();
 
     this.renderTransformHandles();
-
-    this._interactiveCtx.restore();
-    this._staticCtx.restore();
   });
 
   private renderStaticElements(ctx: CanvasRenderingContext2D, elements: IBaseElement[]) {
-    console.log('[board]: renderStaticElements----->');
     elements.forEach((element) => {
       element.render({
         rc: this._staticRC,
@@ -190,8 +183,8 @@ export class Scene {
     // 根据选中的元素添加
     this._app.controlHandleManager.render({
       rc: this._staticRC,
-      canvas: this._interactiveCanvas,
-      ctx: this._interactiveCtx
+      canvas: this._staticCanvas,
+      ctx: this._staticCtx
     });
   }
 

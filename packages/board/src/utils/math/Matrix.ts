@@ -51,11 +51,19 @@ export class Matrix {
   rotate(angle: number): Matrix {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
-    const { a, b, c, d } = this;
-    this.a = a * cos + c * sin;
-    this.b = b * cos + d * sin;
-    this.c = c * cos - a * sin;
-    this.d = d * cos - b * sin;
+
+    const { a, b, c, d, tx, ty } = this;
+
+    // Update the matrix elements for rotation
+    this.a = a * cos + b * sin;
+    this.b = b * cos - a * sin;
+    this.c = c * cos + d * sin;
+    this.d = d * cos - c * sin;
+
+    // Update the translation elements
+    this.tx = tx * cos + ty * sin;
+    this.ty = ty * cos - tx * sin;
+
     return this;
   }
 

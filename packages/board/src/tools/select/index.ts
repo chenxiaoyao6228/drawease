@@ -53,6 +53,10 @@ export class SelectTool implements ITool {
 
   pointerDown(event: PointerEvent) {
     console.log('选择工具：鼠标按下事件');
+    // @ts-ignore
+    window._rotate = () => {
+      this._app.selectedElementsManager.getSelectedElements()[0]?.rotate(Math.PI / 4);
+    };
     const point = {
       x: event.offsetX,
       y: event.offsetY

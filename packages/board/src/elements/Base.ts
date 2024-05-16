@@ -33,9 +33,10 @@ export default abstract class BaseElement implements IBaseElement {
     return this._dataManager.getValues(data);
   }
 
-  updateTransform(matrix: Matrix) {
+  updateTransform(transform: Matrix) {
+    this._transform = transform;
     this.setData({
-      transform: matrix.toArray()
+      transform: transform.toArray()
     });
   }
 
@@ -55,6 +56,21 @@ export default abstract class BaseElement implements IBaseElement {
   translate(dx: number, dy: number) {
     const transform = this._transform.clone().translate(dx, dy);
     this.updateTransform(transform);
+  }
+
+  rotate(angleDelta: number) {
+    const center = this.getCenter();
+    const rotationMatrix = new Matrix().translate(-center.x, -center.y).rotate(angleDelta).translate(center.x, center.y);
+    const _transfrom = this._transform.clone().append(rotationMatrix);
+    this.updateTransform(_transfrom);
+  }
+
+  getCenter() {
+    const { width, height } = this._dataManager.getData();
+    return this._transform.apply({
+      x: width / 2,
+      y: height / 2
+    });
   }
 
   getRotation(): number {

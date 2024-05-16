@@ -81,6 +81,8 @@ export interface IBound {
   transform: IMatrixArr;
 }
 
+export interface ITransformRect extends IBound {}
+
 export interface IRenderConfig {
   rc: RoughCanvas;
   canvas: HTMLCanvasElement;
@@ -96,6 +98,8 @@ export interface IBaseElement {
   hitTest: (e: PointerEvent) => boolean;
   translate: (dx: number, dy: number) => void;
   updateTransform(matrix: Matrix): void;
+  rotate:(angle: number)=> void
   getRotation(): number;
+  getCenter(): IPoint
   getBounds(): IBound;
 }

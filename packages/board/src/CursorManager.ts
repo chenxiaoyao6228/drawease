@@ -29,7 +29,6 @@ export class CursorManager {
   registerCursorStyle(cursorName: ICursor, cursorStyle: string, size?: { width: number; height: number }): void {
     if (cursorStyle.startsWith('<svg')) {
       const url = svgToDataURL(cursorStyle);
-      console.log('url', url);
       this.cursorMap.set(cursorName, `url('${url}') ${size?.width ?? 24}px ${size?.height ?? 24}px, auto`);
     } else {
       this.cursorMap.set(cursorName, cursorStyle);
