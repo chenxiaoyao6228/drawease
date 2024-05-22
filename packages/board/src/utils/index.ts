@@ -40,8 +40,26 @@ export function convertSceneToViewportCoords(sceneCoords: IPoint, params: ITrans
   };
 }
 
+export function degreesToRadians(degrees: number): number {
+  return degrees * (Math.PI / 180);
+}
+
+export function radiansToDegrees(radians: number): number {
+  return radians * (180 / Math.PI);
+}
+
 export function svgToDataURL(svgString: string): string {
   const encoded = encodeURIComponent(svgString).replace(/'/g, '%27').replace(/"/g, '%22');
   const header = 'data:image/svg+xml,';
   return `${header}${encoded}`;
 }
+
+export const normalizeAngle = (angle: number): number => {
+  if (angle < 0) {
+    return angle + 2 * Math.PI;
+  }
+  if (angle >= 2 * Math.PI) {
+    return angle - 2 * Math.PI;
+  }
+  return angle;
+};

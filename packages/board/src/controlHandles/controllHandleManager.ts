@@ -87,8 +87,8 @@ export class ControlHandleManager {
     // 控制柄位置调整，同时逆向调整缩放
     const controlHandles: ControlHandles = {
       rotation: {
-        transform: new Matrix(inverseScaleX, 0, 0, inverseScaleY, width / 2 - handleSize / 2, -(handleSize + ROTATION_RESIZE_HANDLE_GAP))
-          .append(matrix)
+        transform: matrix
+          .append(new Matrix(inverseScaleX, 0, 0, inverseScaleY, width / 2 - handleSize / 2, -(handleSize + ROTATION_RESIZE_HANDLE_GAP)))
           .toArray(),
         width: handleSize,
         height: handleSize

@@ -22,6 +22,10 @@ export default class RectElement extends BaseElement {
     ctx.transform(...transform);
     // rc.rectangle(0, 0, width, height, roughOptions);
     ctx.strokeRect(0, 0, width, height);
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(width / 2, height / 2, 5, 0, 2 * Math.PI);
+    ctx.fill();
     ctx.restore();
   }
 

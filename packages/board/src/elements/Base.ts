@@ -61,8 +61,8 @@ export default abstract class BaseElement implements IBaseElement {
   rotate(angleDelta: number) {
     const center = this.getCenter();
     const rotationMatrix = new Matrix().translate(-center.x, -center.y).rotate(angleDelta).translate(center.x, center.y);
-    const _transfrom = this._transform.clone().append(rotationMatrix);
-    this.updateTransform(_transfrom);
+    this._transform.append(rotationMatrix);
+    this.updateTransform(this._transform);
   }
 
   getCenter() {
@@ -76,6 +76,10 @@ export default abstract class BaseElement implements IBaseElement {
   getRotation(): number {
     const { a, b } = this._transform;
     return Math.atan2(b, a);
+  }
+
+  getTransform(): Matrix {
+    return this._transform;
   }
 
   getBounds(): IBound {

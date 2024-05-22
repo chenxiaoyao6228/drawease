@@ -2,6 +2,15 @@ import { IMatrixArr, IPoint } from '@drawease/board/types';
 
 import { ISize } from './../../types/element';
 
+class Point {
+  x: number;
+  y: number;
+  constructor(x?: number, y?: number) {
+    this.x = x || 0;
+    this.y = y || 0;
+  }
+}
+
 export class Matrix {
   a: number;
   b: number;
@@ -42,9 +51,11 @@ export class Matrix {
 
   scale(x: number, y: number): Matrix {
     this.a *= x;
-    this.b *= x;
-    this.c *= y;
     this.d *= y;
+    this.c *= x;
+    this.b *= y;
+    this.tx *= x;
+    this.ty *= y;
     return this;
   }
 
@@ -52,44 +63,58 @@ export class Matrix {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
 
-    const { a, b, c, d, tx, ty } = this;
+    const a1 = this.a;
+    const c1 = this.c;
+    const tx1 = this.tx;
 
-    // Update the matrix elements for rotation
-    this.a = a * cos + b * sin;
-    this.b = b * cos - a * sin;
-    this.c = c * cos + d * sin;
-    this.d = d * cos - c * sin;
-
-    // Update the translation elements
-    this.tx = tx * cos + ty * sin;
-    this.ty = ty * cos - tx * sin;
+    this.a = a1 * cos - this.b * sin;
+    this.b = a1 * sin + this.b * cos;
+    this.c = c1 * cos - this.d * sin;
+    this.d = c1 * sin + this.d * cos;
+    this.tx = tx1 * cos - this.ty * sin;
+    this.ty = tx1 * sin + this.ty * cos;
 
     return this;
   }
 
+  /**
+   * MatrixA.append(MatrixB): tranforms with MatrixA, then MatrixB
+   */
   append(matrix: Matrix): Matrix {
+    const tx1 = this.tx;
+
+    if (matrix.a !== 1 || matrix.b !== 0 || matrix.c !== 0 || matrix.d !== 1) {
+      const a1 = this.a;
+      const c1 = this.c;
+
+      this.a = a1 * matrix.a + this.b * matrix.c;
+      this.b = a1 * matrix.b + this.b * matrix.d;
+      this.c = c1 * matrix.a + this.d * matrix.c;
+      this.d = c1 * matrix.b + this.d * matrix.d;
+    }
+
+    this.tx = tx1 * matrix.a + this.ty * matrix.c + matrix.tx;
+    this.ty = tx1 * matrix.b + this.ty * matrix.d + matrix.ty;
+
+    return this;
+  }
+
+  /**
+   * MatrixA.append(MatrixB): transform with MatrixB, then MatrixA
+   */
+  prepend(matrix: Matrix): this {
     const a1 = this.a;
     const b1 = this.b;
     const c1 = this.c;
     const d1 = this.d;
-    const tx1 = this.tx;
-    const ty1 = this.ty;
 
-    const a2 = matrix.a;
-    const b2 = matrix.b;
-    const c2 = matrix.c;
-    const d2 = matrix.d;
-    const tx2 = matrix.tx;
-    const ty2 = matrix.ty;
+    this.a = matrix.a * a1 + matrix.b * c1;
+    this.b = matrix.a * b1 + matrix.b * d1;
+    this.c = matrix.c * a1 + matrix.d * c1;
+    this.d = matrix.c * b1 + matrix.d * d1;
 
-    const a = a1 * a2 + c1 * b2;
-    const b = b1 * a2 + d1 * b2;
-    const c = a1 * c2 + c1 * d2;
-    const d = b1 * c2 + d1 * d2;
-    const tx = a1 * tx2 + c1 * ty2 + tx1;
-    const ty = b1 * tx2 + d1 * ty2 + ty1;
-
-    this.set(a, b, c, d, tx, ty);
+    this.tx = matrix.tx * a1 + matrix.ty * c1 + this.tx;
+    this.ty = matrix.tx * b1 + matrix.ty * d1 + this.ty;
 
     return this;
   }
@@ -99,10 +124,10 @@ export class Matrix {
   }
 
   apply(pos: IPoint, newPos?: IPoint) {
+    newPos = newPos || new Point();
+
     const x = pos.x;
     const y = pos.y;
-
-    newPos = newPos || pos;
 
     newPos.x = this.a * x + this.c * y + this.tx;
     newPos.y = this.b * x + this.d * y + this.ty;
@@ -111,11 +136,12 @@ export class Matrix {
   }
 
   applyInverse(pos: IPoint, newPos?: IPoint) {
+    newPos = newPos || new Point();
+
     const id = 1 / (this.a * this.d + this.c * -this.b);
+
     const x = pos.x;
     const y = pos.y;
-
-    newPos = newPos || { x: 0, y: 0 };
 
     newPos.x = this.d * id * x + -this.c * id * y + (this.ty * this.c - this.tx * this.d) * id;
     newPos.y = this.a * id * y + -this.b * id * x + (-this.ty * this.a + this.tx * this.b) * id;

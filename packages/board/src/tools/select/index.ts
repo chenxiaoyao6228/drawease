@@ -55,7 +55,11 @@ export class SelectTool implements ITool {
     console.log('选择工具：鼠标按下事件');
     // @ts-ignore
     window._rotate = () => {
-      this._app.selectedElementsManager.getSelectedElements()[0]?.rotate(Math.PI / 4);
+      const e = this._app.selectedElementsManager.getSelectedElements()[0];
+      if (e) {
+        e.rotate(Math.PI / 6);
+        this._app.scene.renderAll();
+      }
     };
     const point = {
       x: event.offsetX,

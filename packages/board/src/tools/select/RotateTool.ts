@@ -1,11 +1,11 @@
 import { IBaseElement, IPoint, ITool, ToolType } from '@drawease/board/types';
-import { Matrix } from '@drawease/board/utils';
+import { Matrix, radiansToDegrees } from '@drawease/board/utils';
 
 import { Board } from '../..';
 
 export class RotateTool implements ITool {
   type: ToolType = ToolType.Rotate;
-  _app: Board;
+  private _app: Board;
   private _initialPointerPos: IPoint;
   private _isRotatingSingleElement: boolean;
   private _selectedElement: IBaseElement | null;
@@ -34,9 +34,7 @@ export class RotateTool implements ITool {
 
     if (this._isRotatingSingleElement) {
       this._selectedElement = selectedElements[0];
-      this._initialTransform = new Matrix(...this._selectedElement.getData().transform);
-      console.log('Initial transform:', this._initialTransform);
-      console.log('this._selectedElement.getData().transform', this._selectedElement.getData().transform);
+      this._initialTransform = this._selectedElement.getTransform().clone();
 
       const center = this._selectedElement.getCenter();
       console.log('Initial center:', center);
@@ -74,10 +72,9 @@ export class RotateTool implements ITool {
     const initialAngle = this._initialAngle;
     const currentAngle = Math.atan2(currentVector.y, currentVector.x);
     const angleDelta = currentAngle - initialAngle;
-    console.log('Initial angle:', initialAngle);
-    console.log('Current angle:', currentAngle);
-    console.log('Angle delta:', angleDelta);
 
+    console.log('initialAngle， currentAngle', radiansToDegrees(this._initialAngle), radiansToDegrees(currentAngle));
+    console.log('currentAngle');
     this._selectedElement.rotate(angleDelta);
     this._app.scene.renderAll();
   }
@@ -87,7 +84,7 @@ export class RotateTool implements ITool {
   }
 
   pointerUp(event: PointerEvent) {
-    // this._selectedElement = null;
+    this._selectedElement = null;
     this._initialTransform = new Matrix();
     this._initialPointerPos = { x: 0, y: 0 };
     this._isRotatingSingleElement = false;
